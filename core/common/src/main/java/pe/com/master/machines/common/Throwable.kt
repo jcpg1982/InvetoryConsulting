@@ -18,8 +18,7 @@ fun Throwable.toErrorType(): ErrorType {
         )
 
         is HttpException -> {
-            val responseStatus = this.code()
-            when (responseStatus) {
+            when (val responseStatus = this.code()) {
                 ErrorCodes.Http.BAD_REQUEST -> ErrorType.Api.BadRequest(
                     messageDetail ?: "Error (400): Solicitud incorrecta."
                 )
@@ -33,7 +32,8 @@ fun Throwable.toErrorType(): ErrorType {
                 )
 
                 ErrorCodes.Http.BAD_GATEWAY -> ErrorType.Api.BadGateway(
-                    messageDetail ?: "Error de Enlace (502): Problema de comunicación entre servidores."
+                    messageDetail
+                        ?: "Error de Enlace (502): Problema de comunicación entre servidores."
                 )
 
                 ErrorCodes.Http.SERVICE_UNAVAILABLE -> ErrorType.Api.ServiceUnavailable(

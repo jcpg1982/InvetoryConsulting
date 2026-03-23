@@ -39,11 +39,13 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
 
+    implementation(projects.core.common)
     implementation(projects.core.design)
     implementation(projects.feature.navigation.rootNavigation)
 

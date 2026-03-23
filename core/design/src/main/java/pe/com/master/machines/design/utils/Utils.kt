@@ -5,15 +5,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
-import pe.com.master.machines.model.BankAccount
-import pe.com.master.machines.model.Transaction
-import pe.com.master.machines.model.request.model.App
-import pe.com.master.machines.model.request.model.Device
-import pe.com.master.machines.model.request.model.Profile
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
-import kotlin.random.Random
 
 object Utils {
 
@@ -64,24 +63,6 @@ object Utils {
         }
     }
 
-    fun getDeviceInfo(context: Context) = Device(
-        deviceId = getDeviceId(context),
-        height = getScreenHeight(context),
-        model = getDeviceModel,
-        name = getDeviceName,
-        platform = getPlatform,
-        version = getDeviceOSVersion,
-        width = getScreenWidth(context)
-    )
-
-    fun getAppInfo(context: Context) = App(
-        version = getAppVersion(context)
-    )
-
-    fun getProfileInfo() = Profile(
-        language = getDeviceLanguage
-    )
-
     fun formatBalance(amount: Double): String {
         val symbols = DecimalFormatSymbols(Locale.US).apply {
             groupingSeparator = ','
@@ -91,77 +72,15 @@ object Utils {
         return decimalFormat.format(amount)
     }
 
-    fun generateRandomAccount(
-        forcedType: String? = null,
-        forcedSymbol: String? = null
-    ): BankAccount {
-        val types = listOf(
-            "Ahorro Soles",
-            "Corriente Dólares",
-            "Ahorro Euros",
-            "Sueldo Soles",
-            "Inversión Dólares"
-        )
-        val symbols = mapOf(
-            "Ahorro Soles" to "S/",
-            "Corriente Dólares" to "$",
-            "Ahorro Euros" to "€",
-            "Sueldo Soles" to "S/",
-            "Inversión Dólares" to "$"
-        )
-
-        val selectedType = forcedType ?: types.random()
-        val randomAccNumber = (1..14).map { (0..9).random() }.joinToString("")
-
-        return BankAccount(
-            type = selectedType,
-            currencySymbol = forcedSymbol ?: symbols[selectedType] ?: "S/",
-            balance = Random.nextDouble(100.0, 50000.0),
-            accountNumber = randomAccNumber
+    fun horizontalSlideTransition(isPop: Boolean): ContentTransform {
+        val duration = 500
+        val initialOffset = if (isPop) -1 else 1
+        val targetOffset = if (isPop) 1 else -1
+        return slideInHorizontally(
+            initialOffsetX = { it * initialOffset }, animationSpec = tween(duration)
+        ) togetherWith slideOutHorizontally(
+            targetOffsetX = { it * targetOffset }, animationSpec = tween(duration)
         )
     }
 
-    fun generateFakeTransactions(start: Int, count: Int): List<Transaction> {
-        val descriptions = listOf(
-            "Compra Saga Falabella",
-            "Depósito de nómina",
-            "Pago Servicio Luz",
-            "Transferencia recibida",
-            "Retiro Cajero",
-            "Restaurante La Mar",
-            "Pago Netflix",
-            "Abono intereses",
-            "Yape",
-            "plim"
-        )
-
-        val months = listOf(
-            "Ene",
-            "Feb",
-            "Mar",
-            "Abr",
-            "May",
-            "Jun",
-            "Jul",
-            "Ago",
-            "Set",
-            "Oct",
-            "Nov",
-            "Dic"
-        )
-
-        return (start until (start + count)).map { i ->
-            val isIncome = Random.nextBoolean()
-            val monthIndex = (i / 28) % months.size
-            val day = 28 - (i % 28)
-            val month = months[monthIndex]
-
-            Transaction(
-                description = descriptions.random(),
-                amount = Random.nextDouble(10.0, 500.0),
-                date = "$day $month 2025",
-                isIncome = isIncome
-            )
-        }
-    }
 }

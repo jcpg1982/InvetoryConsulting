@@ -53,7 +53,5 @@ fun PreviewDialogConfirm() {
         textNegativeButton = "cancelar",
         textColorNegativeButton = MaterialTheme.colorScheme.onSecondary,
         backgroundColorNegativeButton = ColorWhite,
-        onNegativeCallback = { }) {
-
-    }
+        onNegativeCallback = { }) {}
 }

@@ -14,7 +14,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import pe.com.master.machines.design.theme.ConsultaInventarioTheme
-import pe.com.master.machines.rootnavigation.ui.RootNavigationWrapper
+import pe.com.master.machines.root_navigation.ui.RootNavigationWrapper
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

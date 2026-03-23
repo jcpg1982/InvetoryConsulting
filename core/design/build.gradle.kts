@@ -60,5 +60,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
+    implementation(projects.core.common)
     implementation(projects.layers.model)
 }

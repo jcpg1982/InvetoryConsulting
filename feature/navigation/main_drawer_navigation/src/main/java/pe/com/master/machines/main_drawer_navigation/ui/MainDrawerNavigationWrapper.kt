@@ -1,0 +1,120 @@
+package pe.com.master.machines.main_drawer_navigation.ui
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
+import androidx.savedstate.serialization.SavedStateConfiguration
+import kotlinx.coroutines.launch
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
+import pe.com.master.machines.design.components.drawer.ContentDrawer
+import pe.com.master.machines.design.components.topBar.TopBarHome
+import pe.com.master.machines.design.utils.Utils.horizontalSlideTransition
+import pe.com.master.machines.home.ui.HomeScreen
+import pe.com.master.machines.model.model.Data
+import pe.com.master.machines.model.sealed.MainRoutes
+
+@Composable
+fun MainDrawerNavigationWrapper(
+    data: Data,
+    onNavigateToLogin: () -> Unit
+) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    val listItems = remember(data.listInventories) { data.listInventories }
+    var title by remember { mutableStateOf(listItems.first().inventoryName) }
+    var inventoryId by remember { mutableStateOf(listItems.first().id) }
+    val scope = rememberCoroutineScope()
+    val backStack = rememberNavBackStack(
+        configuration = navSavedStateConfigurationMainDrawer,
+        MainRoutes.HomeRoute
+    )
+
+    val currentRoute = remember(backStack) {
+        backStack.lastOrNull()
+    }
+
+    ModalNavigationDrawer(
+        modifier = Modifier.fillMaxSize(),
+        drawerState = drawerState,
+        drawerContent = {
+            ContentDrawer(
+                listItems = listItems,
+                modifier = Modifier
+                    .fillMaxWidth(0.7f),
+                data = data,
+                onItemSelected = { data ->
+                    scope.launch {
+                        drawerState.close()
+                        if (inventoryId != data.id) {
+                            title = data.inventoryName
+                            inventoryId = data.id
+                        }
+                    }
+                },
+                onClosedSession = {
+                    onNavigateToLogin()
+                }
+            )
+        },
+        content = {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    TopBarHome(
+                        title = title,
+                        onClickNavigation = {
+                            scope.launch {
+                                if (drawerState.isOpen) drawerState.close()
+                                else drawerState.open()
+                            }
+                        }
+                    )
+                },
+                content = { paddingValues ->
+                    NavDisplay(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                        backStack = backStack,
+                        onBack = { backStack.removeLastOrNull() },
+                        entryProvider = entryProvider {
+                            entry<MainRoutes.HomeRoute> {
+                                HomeScreen(
+                                    inventoryId = inventoryId
+                                )
+                            }
+                        },
+                        transitionSpec = { horizontalSlideTransition(false) },
+                        popTransitionSpec = { horizontalSlideTransition(true) }
+                    )
+                }
+            )
+        }
+    )
+
+}
+
+val navSavedStateConfigurationMainDrawer = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(MainRoutes.HomeRoute::class)
+        }
+    }
+}

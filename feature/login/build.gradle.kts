@@ -38,8 +38,10 @@ android {
 
 dependencies {
 
+    implementation(projects.core.common)
     implementation(projects.core.design)
     implementation(projects.layers.model)
+    implementation(projects.layers.domain)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

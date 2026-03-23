@@ -42,7 +42,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     //serialization
     implementation(libs.kotlinx.serialization.json)
-    // Navigation 3
+    //Navigation 3
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation3.runtime)
 }
