@@ -5,8 +5,6 @@ import pe.com.master.machines.common.Resource
 import pe.com.master.machines.network.model.model.ActivePdaNetwork
 import pe.com.master.machines.network.model.request.RequestLoginUserNetwork
 import pe.com.master.machines.network.model.response.ResponseLoginUserNetwork
-import retrofit2.Response
-import retrofit2.http.Path
 
 interface ApiNetworkRepository {
 

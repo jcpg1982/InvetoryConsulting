@@ -50,10 +50,8 @@ dependencies {
     ksp(libs.hilt.compiler)
     //retrofit
     implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.gson)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit.kotlinx.serialization)
     //serialization
     implementation(libs.kotlinx.serialization.json)
     // Test

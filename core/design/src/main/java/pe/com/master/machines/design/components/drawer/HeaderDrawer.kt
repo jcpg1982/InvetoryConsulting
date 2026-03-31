@@ -20,9 +20,7 @@ import pe.com.master.machines.design.components.text.CustomText
 import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.design.theme.ContentInsetEight
 import pe.com.master.machines.design.theme.ContentInsetEighty
-import pe.com.master.machines.design.theme.ContentInsetFifty
 import pe.com.master.machines.design.theme.ContentInsetSixteen
-import pe.com.master.machines.design.theme.ContentInsetSixty
 import pe.com.master.machines.design.theme.DynamicTextFourteen
 import pe.com.master.machines.model.model.Data
 
@@ -77,7 +75,7 @@ fun PreviewHeaderDrawerLight() {
             data = Data(
                 userId = 1982,
                 userName = "Jak Motero",
-                listInventories = listOf()
+                listSociedades = listOf()
             )
         )
     }
@@ -93,7 +91,7 @@ fun PreviewHeaderDrawerDark() {
             data = Data(
                 userId = 1982,
                 userName = "Jak Motero",
-                listInventories = listOf()
+                listSociedades = listOf()
             )
         )
     }

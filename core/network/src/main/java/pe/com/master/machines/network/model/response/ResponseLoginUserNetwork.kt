@@ -1,16 +1,15 @@
 package pe.com.master.machines.network.model.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import pe.com.master.machines.network.model.model.DataNetwork
-import pe.com.master.machines.network.model.model.InventoryNetwork
 
 @Serializable
 data class ResponseLoginUserNetwork(
-    @SerializedName("ok")
+    @SerialName("ok")
     val ok: Boolean? = null,
-    @SerializedName("mensaje")
+    @SerialName("mensaje")
     val message: String? = null,
-    @SerializedName("data")
+    @SerialName("data")
     val data: DataNetwork? = null,
 )

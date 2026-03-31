@@ -1,7 +1,7 @@
 package pe.com.master.machines.network.repositoryImpl
 
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.json.Json
 import pe.com.master.machines.common.Resource
 import pe.com.master.machines.common.toErrorType
 import pe.com.master.machines.network.di.ApiService
@@ -11,10 +11,9 @@ import pe.com.master.machines.network.repository.ApiNetworkRepository
 import javax.inject.Inject
 
 class ApiNetworkRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val json: Json
 ) : ApiNetworkRepository {
-
-    private val gson = Gson()
 
     override fun loginUser(body: RequestLoginUserNetwork) = flow {
         try {
@@ -24,7 +23,7 @@ class ApiNetworkRepositoryImpl @Inject constructor(
             } else {
                 val errorJson = response.errorBody()?.string()
                 val errorResponse = try {
-                    gson.fromJson(errorJson, ResponseLoginError::class.java)
+                    errorJson?.let { json.decodeFromString<ResponseLoginError>(it) }
                 } catch (e: Exception) {
                     null
                 }
@@ -45,7 +44,7 @@ class ApiNetworkRepositoryImpl @Inject constructor(
             } else {
                 val errorJson = response.errorBody()?.string()
                 val errorResponse = try {
-                    gson.fromJson(errorJson, ResponseLoginError::class.java)
+                    errorJson?.let { json.decodeFromString<ResponseLoginError>(it) }
                 } catch (e: Exception) {
                     null
                 }

@@ -3,6 +3,7 @@ package pe.com.master.machines.design.components.drawer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -23,20 +24,26 @@ import pe.com.master.machines.design.theme.ColorBlack
 import pe.com.master.machines.design.theme.ColorWhite
 import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.design.theme.ContentInsetEight
+import pe.com.master.machines.design.theme.DynamicTextFourteen
 import pe.com.master.machines.model.model.Data
 import pe.com.master.machines.model.model.Inventory
+import pe.com.master.machines.model.model.Sociedad
 
 @Composable
 fun ContentDrawer(
-    listItems: List<Inventory>,
+    listItems: List<Sociedad>,
     data: Data,
     modifier: Modifier = Modifier,
-    onItemSelected: (Inventory) -> Unit,
+    onItemSelected: (Int, Int) -> Unit,
     onClosedSession: () -> Unit,
 ) {
 
-    var selectedItem by remember {
-        mutableStateOf(listItems.firstOrNull())
+    var selectedSociedad by remember {
+        mutableStateOf(listItems.first())
+    }
+
+    var selectedInventory by remember(selectedSociedad) {
+        mutableStateOf(selectedSociedad.listInventories.first())
     }
 
     Column(
@@ -46,52 +53,97 @@ fun ContentDrawer(
             .navigationBarsPadding()
     ) {
         HeaderDrawer(data = data)
-        LazyColumn(
-            Modifier
+        Row(
+            modifier = Modifier
                 .fillMaxSize()
-                .weight(1f)
-        ) {
-            items(listItems) { item ->
-                val isSelected = item == selectedItem
-                val (colorBackGround, colorText) = if (isSelected) Pair(
-                    ColorBlack.copy(alpha = 0.3f),
-                    ColorWhite
+                .weight(1f),
+            content = {
+                LazyColumn(
+                    Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    content = {
+                        items(listItems) { item ->
+                            val isSelected = item == selectedSociedad
+                            val (colorBackGround, colorText) = if (isSelected) Pair(
+                                ColorBlack.copy(alpha = 0.3f),
+                                ColorWhite
+                            )
+                            else Pair(
+                                ColorWhite,
+                                ColorBlack
+                            )
+                            CustomText(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(color = colorBackGround)
+                                    .weight(1f)
+                                    .padding(ContentInsetEight)
+                                    .clickable { selectedSociedad = item },
+                                text = item.sociedadName,
+                                color = colorText,
+                                maxLines = 3,
+                                fontSize = DynamicTextFourteen
+                            )
+                        }
+                        item {
+                            CustomText(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(color = ColorWhite)
+                                    .weight(1f)
+                                    .padding(ContentInsetEight)
+                                    .clickable { onClosedSession() },
+                                text = "Cerrar Sesión",
+                                color = ColorBlack,
+                                fontSize = DynamicTextFourteen,
+                                maxLines = 2
+                            )
+                        }
+                    }
                 )
-                else Pair(
-                    ColorWhite,
-                    ColorBlack
-                )
-                CustomText(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = colorBackGround)
-                        .weight(1f)
-                        .padding(ContentInsetEight)
-                        .clickable { onItemSelected(item) },
-                    text = item.inventoryName,
-                    color = colorText,
-                    maxLines = 2
+                LazyColumn(
+                    Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    content = {
+                        items(selectedSociedad.listInventories) { item ->
+                            val isSelected = item == selectedInventory
+                            val (colorBackGround, colorText) = if (isSelected) Pair(
+                                ColorBlack.copy(alpha = 0.3f),
+                                ColorWhite
+                            )
+                            else Pair(
+                                ColorWhite,
+                                ColorBlack
+                            )
+                            CustomText(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(color = colorBackGround)
+                                    .weight(1f)
+                                    .padding(ContentInsetEight)
+                                    .clickable {
+                                        onItemSelected(
+                                            selectedSociedad.id,
+                                            selectedInventory.id
+                                        )
+                                    },
+                                text = item.inventoryName,
+                                color = colorText,
+                                maxLines = 2,
+                                fontSize = DynamicTextFourteen
+                            )
+                        }
+                    }
                 )
             }
-            item {
-                CustomText(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = ColorWhite)
-                        .weight(1f)
-                        .padding(ContentInsetEight)
-                        .clickable { onClosedSession() },
-                    text = "Cerrar Sesión",
-                    color = ColorBlack,
-                    maxLines = 2
-                )
-            }
-        }
+        )
         FooterDrawer()
     }
 }
 
-val listItems = listOf(
+val listInventory = listOf(
     Inventory(
         id = 0,
         inventoryName = "primero"
@@ -110,6 +162,29 @@ val listItems = listOf(
     )
 )
 
+val listSociedad = listOf(
+    Sociedad(
+        id = 0,
+        sociedadName = "primero",
+        listInventories = listInventory
+    ),
+    Sociedad(
+        id = 1,
+        sociedadName = "segundo",
+        listInventories = listInventory
+    ),
+    Sociedad(
+        id = 2,
+        sociedadName = "tercero",
+        listInventories = listInventory
+    ),
+    Sociedad(
+        id = 3,
+        sociedadName = "cuarto",
+        listInventories = listInventory
+    )
+)
+
 @Preview
 @Composable
 fun PreviewDarkContentDrawer() {
@@ -117,13 +192,13 @@ fun PreviewDarkContentDrawer() {
         darkTheme = true
     ) {
         ContentDrawer(
-            listItems = listItems,
+            listItems = listSociedad,
             data = Data(
                 userId = 1982,
                 userName = "Jak Motero",
-                listInventories = listOf()
+                listSociedades = listOf()
             ),
-            onItemSelected = {},
+            onItemSelected = { _, _ -> },
             onClosedSession = {},
         )
     }
@@ -136,13 +211,13 @@ fun PreviewLightContentDrawer() {
         darkTheme = false
     ) {
         ContentDrawer(
-            listItems = listItems,
+            listItems = listSociedad,
             data = Data(
                 userId = 1982,
                 userName = "Jak Motero",
-                listInventories = listOf()
+                listSociedades = listOf()
             ),
-            onItemSelected = {},
+            onItemSelected = { _, _ -> },
             onClosedSession = {},
         )
     }

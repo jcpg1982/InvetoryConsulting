@@ -17,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import pe.com.master.machines.design.components.text.CustomText
 import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.design.theme.ContentInsetEight
+import pe.com.master.machines.design.theme.DynamicTextFourteen
+import pe.com.master.machines.design.theme.DynamicTextTwelve
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +34,8 @@ fun TopBarHome(
             CustomText(
                 modifier = Modifier.padding(start = ContentInsetEight),
                 text = title,
-                color = Color.White
+                color = Color.White,
+                fontSize = DynamicTextTwelve
             )
         },
         navigationIcon = {

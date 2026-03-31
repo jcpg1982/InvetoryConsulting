@@ -28,6 +28,7 @@ import pe.com.master.machines.design.components.topBar.TopBarHome
 import pe.com.master.machines.design.utils.Utils.horizontalSlideTransition
 import pe.com.master.machines.home.ui.HomeScreen
 import pe.com.master.machines.model.model.Data
+import pe.com.master.machines.model.model.Inventory
 import pe.com.master.machines.model.sealed.MainRoutes
 
 @Composable
@@ -37,9 +38,13 @@ fun MainDrawerNavigationWrapper(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    val listItems = remember(data.listInventories) { data.listInventories }
-    var title by remember { mutableStateOf(listItems.first().inventoryName) }
-    var inventoryId by remember { mutableStateOf(listItems.first().id) }
+    val listItems = remember(data.listSociedades) { data.listSociedades }
+    var idSociedad by remember { mutableStateOf(listItems.first().id) }
+    var idInventory by remember { mutableStateOf(listItems[idSociedad].listInventories.first().id) }
+
+    var title by remember { mutableStateOf(listItems.first().sociedadName) }
+    var subTitle by remember { mutableStateOf(listItems.first().listInventories.first().inventoryName) }
+
     val scope = rememberCoroutineScope()
     val backStack = rememberNavBackStack(
         configuration = navSavedStateConfigurationMainDrawer,
@@ -59,12 +64,15 @@ fun MainDrawerNavigationWrapper(
                 modifier = Modifier
                     .fillMaxWidth(0.7f),
                 data = data,
-                onItemSelected = { data ->
+                onItemSelected = { sociedadId, inventoryId ->
                     scope.launch {
                         drawerState.close()
-                        if (inventoryId != data.id) {
-                            title = data.inventoryName
-                            inventoryId = data.id
+                        if (inventoryId != idInventory) {
+                            title = data.listSociedades[sociedadId].sociedadName
+                            subTitle =
+                                data.listSociedades[sociedadId].listInventories[inventoryId].inventoryName
+                            idSociedad = sociedadId
+                            idInventory = inventoryId
                         }
                     }
                 },
@@ -78,7 +86,7 @@ fun MainDrawerNavigationWrapper(
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
                     TopBarHome(
-                        title = title,
+                        title = "$title\n$subTitle",
                         onClickNavigation = {
                             scope.launch {
                                 if (drawerState.isOpen) drawerState.close()
@@ -97,7 +105,8 @@ fun MainDrawerNavigationWrapper(
                         entryProvider = entryProvider {
                             entry<MainRoutes.HomeRoute> {
                                 HomeScreen(
-                                    inventoryId = inventoryId
+                                    sociedadId = idSociedad,
+                                    inventoryId = idInventory
                                 )
                             }
                         },

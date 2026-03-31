@@ -1,87 +1,87 @@
 package pe.com.master.machines.network.model.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ActivePdaNetwork(
-    @SerializedName("cod_barra_new")
+    @SerialName("cod_barra_new")
     var codBarraNew: String = "",
-    @SerializedName("id_Activos_PDA")
+    @SerialName("id_Activos_PDA")
     var idActivosPda: Int? = null,
-    @SerializedName("id_unidad_new")
+    @SerialName("id_unidad_new")
     var idUnidadNew: Int? = null,
-    @SerializedName("des_activo_new")
+    @SerialName("des_activo_new")
     var desActivoNew: String? = null,
-    @SerializedName("des_ampliada_new")
+    @SerialName("des_ampliada_new")
     var desAmpliadaNew: String? = null,
-    @SerializedName("nro_serie_new")
+    @SerialName("nro_serie_new")
     var nroSerieNew: String? = null,
-    @SerializedName("nro_motor_new")
+    @SerialName("nro_motor_new")
     var nroMotorNew: String? = null,
-    @SerializedName("id_centro_new")
+    @SerialName("id_centro_new")
     var idCentroNew: Int? = null,
-    @SerializedName("des_centro_new")
+    @SerialName("des_centro_new")
     var desCentroNew: String? = null,
-    @SerializedName("id_proceso_new")
+    @SerialName("id_proceso_new")
     var idProcesoNew: Int? = null,
-    @SerializedName("des_proceso_new")
+    @SerialName("des_proceso_new")
     var desProcesoNew: String? = null,
-    @SerializedName("nro_placa_new")
+    @SerialName("nro_placa_new")
     var nroPlacaNew: String? = null,
-    @SerializedName("id_tipo_activo_new")
+    @SerialName("id_tipo_activo_new")
     var idTipoActivoNew: Int? = null,
-    @SerializedName("des_tipo_activo_new")
+    @SerialName("des_tipo_activo_new")
     var desTipoActivoNew: String? = null,
-    @SerializedName("id_marca_new")
+    @SerialName("id_marca_new")
     var idMarcaNew: Int? = null,
-    @SerializedName("des_marca_new")
+    @SerialName("des_marca_new")
     var desMarcaNew: String? = null,
-    @SerializedName("des_modelo_new")
+    @SerialName("des_modelo_new")
     var desModeloNew: String? = null,
-    @SerializedName("des_potencia_new")
+    @SerialName("des_potencia_new")
     var desPotenciaNew: String? = null,
-    @SerializedName("des_capacidad_new")
+    @SerialName("des_capacidad_new")
     var desCapacidadNew: String? = null,
-    @SerializedName("id_operario")
+    @SerialName("id_operario")
     var idOperario: Int? = null,
-    @SerializedName("fecha")
+    @SerialName("fecha")
     var fecha: String? = null,
-    @SerializedName("estado")
+    @SerialName("estado")
     var estado: String? = null,
-    @SerializedName("id_pda")
+    @SerialName("id_pda")
     var idPda: String? = null,
-    @SerializedName("operativo")
+    @SerialName("operativo")
     var operativo: Int? = null,
-    @SerializedName("des_observacion_new")
+    @SerialName("des_observacion_new")
     var desObservacionNew: String? = null,
-    @SerializedName("fecha_ult_modificacion")
+    @SerialName("fecha_ult_modificacion")
     var fechaUltModificacion: String? = null,
-    @SerializedName("cod_barra_padre_new")
+    @SerialName("cod_barra_padre_new")
     var codBarraPadreNew: String? = null,
-    @SerializedName("tag")
+    @SerialName("tag")
     var tag: String? = null,
-    @SerializedName("nro_chasis")
+    @SerialName("nro_chasis")
     var nroChasis: String? = null,
-    @SerializedName("horometro")
+    @SerialName("horometro")
     var horometro: Double? = null,
-    @SerializedName("id_usuario_responsable")
+    @SerialName("id_usuario_responsable")
     var idUsuarioResponsable: Int? = null,
-    @SerializedName("id_centro_costo")
+    @SerialName("id_centro_costo")
     var idCentroCosto: Int? = null,
-    @SerializedName("componente_completo")
+    @SerialName("componente_completo")
     var componenteCompleto: Int? = null,
-    @SerializedName("id_tipo_bien")
+    @SerialName("id_tipo_bien")
     var idTipoBien: Int? = null,
-    @SerializedName("fotoPathLocal")
+    @SerialName("fotoPathLocal")
     var fotoPathLocal: String? = null,
-    @SerializedName("fotoPathUrl")
+    @SerialName("fotoPathUrl")
     var fotoPathUrl: String? = null,
-    @SerializedName("fotoBase64")
+    @SerialName("fotoBase64")
     var fotoBase64: String? = null,
-    @SerializedName("des_color_new")
+    @SerialName("des_color_new")
     var desColorNew: String? = null,
-    @SerializedName("id_inventario_activo_fijo")
+    @SerialName("id_inventario_activo_fijo")
     var idInventarioActivoFijo: Int? = null
 )
 
