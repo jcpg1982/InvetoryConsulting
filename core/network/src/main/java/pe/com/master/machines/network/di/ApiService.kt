@@ -2,6 +2,7 @@ package pe.com.master.machines.network.di
 
 import pe.com.master.machines.network.model.request.RequestLoginUserNetwork
 import pe.com.master.machines.network.model.response.ResponseLoginUserNetwork
+import pe.com.master.machines.network.model.response.ResponseSearchBarcodeNetwork
 import pe.com.master.machines.network.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,6 +20,6 @@ interface ApiService {
         @Path("id_sociedad") sociedadId: Int,
         @Path("id_inventario") invId: Int,
         @Path("cod_barra") barcode: String
-    ): Response<ActivePdaNetwork>
+    ): Response<ResponseSearchBarcodeNetwork>
 
 }

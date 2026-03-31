@@ -1,6 +1,7 @@
 package pe.com.master.machines.data.mappers
 
 import pe.com.master.machines.model.model.ActivePda
+import pe.com.master.machines.network.model.model.ActivePdaNetwork
 
 fun ActivePdaNetwork?.asModelActivePda() = ActivePda(
     codBarraNew = this?.codBarraNew.orEmpty(),
@@ -39,7 +40,6 @@ fun ActivePdaNetwork?.asModelActivePda() = ActivePda(
     idTipoBien = this?.idTipoBien ?: -1,
     fotoPathLocal = this?.fotoPathLocal.orEmpty(),
     fotoPathUrl = this?.fotoPathUrl.orEmpty(),
-    fotoBase64 = this?.fotoBase64.orEmpty(),
     desColorNew = this?.desColorNew.orEmpty(),
-    idInventarioActivoFijo = this?.idInventarioActivoFijo ?: 0
+    idInventarioActivoFijo = this?.idInventarioActivoFijo ?: -1
 )

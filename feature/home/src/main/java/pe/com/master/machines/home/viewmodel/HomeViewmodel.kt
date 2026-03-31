@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pe.com.master.machines.common.Resource
@@ -25,8 +27,8 @@ class HomeViewmodel @Inject constructor(
 
     private val TAG = HomeViewmodel::class.java.simpleName
 
-    private var _homeState = MutableStateFlow<HomeState>(HomeState.First)
-    val homeState get() = _homeState.asStateFlow()
+    private var _homeState = Channel<HomeState>()
+    val homeState get() = _homeState.receiveAsFlow()
 
     fun getSearchActivePda(sociedadId: Int, invId: Int, barcode: String) {
         Log.d(
@@ -38,11 +40,11 @@ class HomeViewmodel @Inject constructor(
                 .flowOn(Dispatchers.IO)
                 .onStart {
                     Log.d(TAG, "getSearchActivePda: onStart - Actualizando a estado Loading")
-                    _homeState.update { HomeState.Loading }
+                    _homeState.send(HomeState.Loading)
                 }
                 .catch { e ->
                     Log.e(TAG, "getSearchActivePda: catch - Error capturado: ${e.message}", e)
-                    _homeState.update { HomeState.Error(e.message ?: "Error desconocido") }
+                    _homeState.send(HomeState.Error(e.message ?: "Error desconocido"))
                 }
                 .collect { res ->
                     when (res) {
@@ -51,12 +53,12 @@ class HomeViewmodel @Inject constructor(
                                 TAG,
                                 "getSearchActivePda: Resource.Error - Mensaje: ${res.stringErrorMessage}"
                             )
-                            _homeState.update { HomeState.Error(res.stringErrorMessage) }
+                            _homeState.send(HomeState.Error(res.stringErrorMessage))
                         }
 
                         is Resource.Success -> {
                             Log.d(TAG, "getSearchActivePda: Resource.Success - Login exitoso")
-                            _homeState.update { HomeState.SuccessSearch }
+                            _homeState.send(HomeState.SuccessSearch(res.data.data))
                         }
                     }
                 }

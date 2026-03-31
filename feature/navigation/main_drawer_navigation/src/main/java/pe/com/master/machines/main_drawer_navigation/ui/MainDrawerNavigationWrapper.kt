@@ -39,11 +39,13 @@ fun MainDrawerNavigationWrapper(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     val listItems = remember(data.listSociedades) { data.listSociedades }
-    var idSociedad by remember { mutableStateOf(listItems.first().id) }
-    var idInventory by remember { mutableStateOf(listItems[idSociedad].listInventories.first().id) }
+    var sociedad by remember { mutableStateOf(listItems.firstOrNull()) }
+    var idSociedad by remember { mutableStateOf(sociedad?.id) }
+    var inventory by remember { mutableStateOf(sociedad?.listInventories?.firstOrNull()) }
+    var idInventory by remember { mutableStateOf(inventory?.id) }
 
-    var title by remember { mutableStateOf(listItems.first().sociedadName) }
-    var subTitle by remember { mutableStateOf(listItems.first().listInventories.first().inventoryName) }
+    var title by remember { mutableStateOf(sociedad?.sociedadName.orEmpty()) }
+    var subTitle by remember { mutableStateOf(inventory?.inventoryName.orEmpty()) }
 
     val scope = rememberCoroutineScope()
     val backStack = rememberNavBackStack(
@@ -102,8 +104,8 @@ fun MainDrawerNavigationWrapper(
                         entryProvider = entryProvider {
                             entry<MainRoutes.HomeRoute> {
                                 HomeScreen(
-                                    sociedadId = idSociedad,
-                                    inventoryId = idInventory
+                                    sociedadId = idSociedad ?: -1,
+                                    inventoryId = idInventory ?: -1
                                 )
                             }
                         },

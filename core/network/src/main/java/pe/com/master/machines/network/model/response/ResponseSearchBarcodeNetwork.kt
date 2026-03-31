@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 import pe.com.master.machines.network.model.model.ActivePdaNetwork
 
 @Serializable
-data class ResponseSearchBarcode(
+data class ResponseSearchBarcodeNetwork(
     @SerialName("data")
-    val data: ActivePdaNetwork,
+    val data: ActivePdaNetwork? = null,
     @SerialName("mensaje")
-    val message: String,
+    val message: String? = null,
     @SerialName("ok")
-    val ok: Boolean
+    val ok: Boolean? = null
 )
