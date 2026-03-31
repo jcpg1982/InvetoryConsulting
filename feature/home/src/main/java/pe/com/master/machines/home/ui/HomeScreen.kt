@@ -1,5 +1,6 @@
 package pe.com.master.machines.home.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -151,15 +152,19 @@ fun HomeScreen(
                 item { InfoRow(label = "Fecha Modif.", value = active.fechaUltModificacion) }
                 item { InfoRow(label = "Observación", value = active.desObservacionNew) }
                 if (active.fotoPathUrl.isNotBlank()) {
-                    val photo = "https://api.dmycm.com.pe/robocon-storage${active.fotoPathUrl}"
+                    val fileName =
+                        if (active.fotoPathUrl.startsWith("/")) active.fotoPathUrl else "/${active.fotoPathUrl}"
+                    val photoUrl = "https://api.dmycm.com.pe/robocon-storage$fileName"
                     item {
                         CustomImage(
-                            model = photo,
+                            model = photoUrl,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .height(350.dp)
                                 .padding(vertical = ContentInsetEight)
-                                .clickable { onNavigateToFullImage(photo) },
-                            contentScale = ContentScale.Crop,
+                                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                                .clickable { onNavigateToFullImage(photoUrl) },
+                            contentScale = ContentScale.Fit,
                             viewShimmer = true
                         )
                     }
