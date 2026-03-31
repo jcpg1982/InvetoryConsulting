@@ -55,7 +55,7 @@ object RetrofitHiltInjection {
 
     @Provides
     @Singleton
-    fun provideBancaApiService(retrofit: Retrofit): ApiService {
+    fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 }

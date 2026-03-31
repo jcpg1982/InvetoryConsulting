@@ -42,7 +42,6 @@ dependencies {
     implementation(projects.layers.model)
     implementation(projects.feature.login)
     implementation(projects.feature.navigation.mainDrawerNavigation)
-    implementation(projects.feature.fullImage)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

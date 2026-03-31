@@ -29,6 +29,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import pe.com.master.machines.design.components.dialogs.DialogAlert
 import pe.com.master.machines.design.components.dialogs.LoadingDialog
 import pe.com.master.machines.design.components.images.CustomImage
+import pe.com.master.machines.design.components.images.FullImageScreen
 import pe.com.master.machines.design.components.row.InfoRow
 import pe.com.master.machines.design.components.text.CustomText
 import pe.com.master.machines.design.components.text.SearchText
@@ -43,12 +44,12 @@ import pe.com.master.machines.model.model.ActivePda
 fun HomeScreen(
     sociedadId: Int,
     inventoryId: Int,
-    onNavigateToFullImage: (String) -> Unit,
     viewModel: HomeViewmodel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val scanner = remember { GmsBarcodeScanning.getClient(context) }
 
+    var imageUrl by rememberSaveable { mutableStateOf("") }
     var searchText by rememberSaveable { mutableStateOf("58222210020255") }
     var messageError by rememberSaveable { mutableStateOf("") }
     var messageLoading by rememberSaveable { mutableStateOf("") }
@@ -81,96 +82,105 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = ContentInsetSixteen)
-    ) {
+            .padding(horizontal = ContentInsetSixteen),
+        content = {
 
-        Spacer(modifier = Modifier.height(ContentInsetEight))
+            Spacer(modifier = Modifier.height(ContentInsetEight))
 
-        SearchText(
-            hintSearch = "Ingresar código de barra",
-            value = searchText,
-            onValueChange = { searchText = it },
-            maxCharacter = 100,
-            onMessageSearch = { query ->
-                if (query.isNotBlank()) {
-                    viewModel.getSearchActivePda(sociedadId, inventoryId, query)
-                }
-            },
-            onScanClick = {
-                scanner.startScan()
-                    .addOnSuccessListener { barcode ->
-                        val rawValue: String? = barcode.rawValue
-                        rawValue?.let {
-                            searchText = it
-                            viewModel.getSearchActivePda(sociedadId, inventoryId, it)
+            SearchText(
+                hintSearch = "Ingresar código de barra",
+                value = searchText,
+                onValueChange = { searchText = it },
+                maxCharacter = 100,
+                onMessageSearch = { query ->
+                    if (query.isNotBlank()) {
+                        viewModel.getSearchActivePda(sociedadId, inventoryId, query)
+                    }
+                },
+                onScanClick = {
+                    scanner.startScan()
+                        .addOnSuccessListener { barcode ->
+                            val rawValue: String? = barcode.rawValue
+                            rawValue?.let {
+                                searchText = it
+                                viewModel.getSearchActivePda(sociedadId, inventoryId, it)
+                            }
                         }
-                    }
-                    .addOnFailureListener {
-                        messageError = "Error al escanear: ${it.message}"
-                    }
-            }
-        )
-
-        activePdaState?.let { active ->
-            Spacer(modifier = Modifier.height(ContentInsetSixteen))
-
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = ContentInsetSixteen)
-            ) {
-                item {
-                    CustomText(
-                        text = "Detalles del Activo",
-                        fontSize = DynamicTextSixteen,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(vertical = ContentInsetEight)
-                    )
-                    HorizontalDivider(
-                        thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                        modifier = Modifier.padding(bottom = ContentInsetEight)
-                    )
+                        .addOnFailureListener {
+                            messageError = "Error al escanear: ${it.message}"
+                        }
                 }
+            )
 
-                item { InfoRow(label = "Código de Barra", value = active.codBarraNew) }
-                item { InfoRow(label = "Descripción", value = active.desActivoNew) }
-                item { InfoRow(label = "Marca", value = active.desMarcaNew) }
-                item { InfoRow(label = "Modelo", value = active.desModeloNew) }
-                item { InfoRow(label = "Serie", value = active.nroSerieNew) }
-                item { InfoRow(label = "Placa", value = active.nroPlacaNew) }
-                item { InfoRow(label = "Chasis", value = active.nroChasis) }
-                item { InfoRow(label = "Motor", value = active.nroMotorNew) }
-                item { InfoRow(label = "Estado", value = active.estado) }
-                item { InfoRow(label = "Centro", value = active.desCentroNew) }
-                item { InfoRow(label = "Capacidad", value = active.desCapacidadNew) }
-                item { InfoRow(label = "Color", value = active.desColorNew) }
-                item { InfoRow(label = "Potencia", value = active.desPotenciaNew) }
-                item { InfoRow(label = "Proceso", value = active.desProcesoNew) }
-                item { InfoRow(label = "Tipo Activo", value = active.desTipoActivoNew) }
-                item { InfoRow(label = "Tag", value = active.tag) }
-                item { InfoRow(label = "Horómetro", value = active.horometro.toString()) }
-                item { InfoRow(label = "Fecha Modif.", value = active.fechaUltModificacion) }
-                item { InfoRow(label = "Observación", value = active.desObservacionNew) }
-                if (active.fotoPathUrl.isNotBlank()) {
-                    val fileName =
-                        if (active.fotoPathUrl.startsWith("/")) active.fotoPathUrl else "/${active.fotoPathUrl}"
-                    val photoUrl = "https://api.dmycm.com.pe/robocon-storage$fileName"
+            activePdaState?.let { active ->
+                Spacer(modifier = Modifier.height(ContentInsetSixteen))
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(bottom = ContentInsetSixteen)
+                ) {
                     item {
-                        CustomImage(
-                            model = photoUrl,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(350.dp)
-                                .padding(vertical = ContentInsetEight)
-                                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-                                .clickable { onNavigateToFullImage(photoUrl) },
-                            contentScale = ContentScale.Fit,
-                            viewShimmer = true
+                        CustomText(
+                            text = "Detalles del Activo",
+                            fontSize = DynamicTextSixteen,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(vertical = ContentInsetEight)
                         )
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                            modifier = Modifier.padding(bottom = ContentInsetEight)
+                        )
+                    }
+
+                    item { InfoRow(label = "Código de Barra", value = active.codBarraNew) }
+                    item { InfoRow(label = "Descripción", value = active.desActivoNew) }
+                    item { InfoRow(label = "Marca", value = active.desMarcaNew) }
+                    item { InfoRow(label = "Modelo", value = active.desModeloNew) }
+                    item { InfoRow(label = "Serie", value = active.nroSerieNew) }
+                    item { InfoRow(label = "Placa", value = active.nroPlacaNew) }
+                    item { InfoRow(label = "Chasis", value = active.nroChasis) }
+                    item { InfoRow(label = "Motor", value = active.nroMotorNew) }
+                    item { InfoRow(label = "Estado", value = active.estado) }
+                    item { InfoRow(label = "Centro", value = active.desCentroNew) }
+                    item { InfoRow(label = "Capacidad", value = active.desCapacidadNew) }
+                    item { InfoRow(label = "Color", value = active.desColorNew) }
+                    item { InfoRow(label = "Potencia", value = active.desPotenciaNew) }
+                    item { InfoRow(label = "Proceso", value = active.desProcesoNew) }
+                    item { InfoRow(label = "Tipo Activo", value = active.desTipoActivoNew) }
+                    item { InfoRow(label = "Tag", value = active.tag) }
+                    item { InfoRow(label = "Horómetro", value = active.horometro.toString()) }
+                    item { InfoRow(label = "Fecha Modif.", value = active.fechaUltModificacion) }
+                    item { InfoRow(label = "Observación", value = active.desObservacionNew) }
+                    if (active.fotoPathUrl.isNotBlank()) {
+                        val fileName =
+                            if (active.fotoPathUrl.startsWith("/")) active.fotoPathUrl else "/${active.fotoPathUrl}"
+                        val photoUrl = "https://api.dmycm.com.pe/robocon-storage$fileName"
+                        item {
+                            CustomImage(
+                                model = photoUrl,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = ContentInsetEight)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                                    .clickable { imageUrl = photoUrl },
+                                contentScale = ContentScale.Inside,
+                                viewShimmer = true
+                            )
+                        }
                     }
                 }
             }
         }
+    )
+
+    if (imageUrl.isNotBlank()) {
+        FullImageScreen(
+            imageUrl = imageUrl,
+            onNavigateToBack = {
+                imageUrl = ""
+            }
+        )
     }
 
     if (messageError.isNotBlank()) {

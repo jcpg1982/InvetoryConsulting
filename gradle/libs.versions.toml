@@ -23,7 +23,7 @@ kotlinxSerialization = "1.10.0"
 androidx-core-splashscreen = "1.2.0"
 uiToolingPreview = "1.10.6"
 uiTooling = "1.10.6"
-coil = "3.4.0"
+coil = "3.0.0-rc01"
 mockk = "1.14.9"
 kotlinxCoroutinesTest = "1.10.2"
 turbine = "1.2.1"
@@ -74,6 +74,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 # Coil 3
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 # Test
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }

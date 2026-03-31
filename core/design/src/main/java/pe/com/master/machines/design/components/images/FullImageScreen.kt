@@ -1,4 +1,4 @@
-package pe.com.master.machines.full_image.ui
+package pe.com.master.machines.design.components.images
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import pe.com.master.machines.design.components.images.CustomImage
 
 @Composable
 fun FullImageScreen(

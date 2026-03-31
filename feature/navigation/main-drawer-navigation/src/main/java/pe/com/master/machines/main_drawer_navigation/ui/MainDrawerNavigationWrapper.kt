@@ -28,14 +28,12 @@ import pe.com.master.machines.design.components.topBar.TopBarHome
 import pe.com.master.machines.design.utils.Utils.horizontalSlideTransition
 import pe.com.master.machines.home.ui.HomeScreen
 import pe.com.master.machines.model.model.Data
-import pe.com.master.machines.model.model.Inventory
 import pe.com.master.machines.model.sealed.MainRoutes
 
 @Composable
 fun MainDrawerNavigationWrapper(
     data: Data,
     onNavigateToLogin: () -> Unit,
-    onNavigateToFullImage: (String) -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -107,7 +105,6 @@ fun MainDrawerNavigationWrapper(
                                 HomeScreen(
                                     sociedadId = idSociedad ?: -1,
                                     inventoryId = idInventory ?: -1,
-                                    onNavigateToFullImage = onNavigateToFullImage
                                 )
                             }
                         },
