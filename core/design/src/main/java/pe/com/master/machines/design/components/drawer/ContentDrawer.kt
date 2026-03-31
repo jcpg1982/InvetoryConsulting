@@ -40,12 +40,10 @@ fun ContentDrawer(
 ) {
     if (listItems.isEmpty()) return
 
-    // Estado para la Sociedad seleccionada
     var selectedSociedad by remember {
         mutableStateOf(listItems.first())
     }
 
-    // El inventario seleccionado se reinicia cuando cambia la sociedad
     var selectedInventory by remember(selectedSociedad) {
         mutableStateOf(selectedSociedad.listInventories.firstOrNull())
     }
@@ -94,6 +92,19 @@ fun ContentDrawer(
                         fontSize = DynamicTextFourteen
                     )
                 }
+                item {
+                    CustomText(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = MaterialTheme.colorScheme.surface)
+                            .clickable { onClosedSession() }
+                            .padding(ContentInsetEight),
+                        text = "Cerrar Sesión",
+                        color = MaterialTheme.colorScheme.error,
+                        fontSize = DynamicTextFourteen,
+                        maxLines = 1
+                    )
+                }
             }
 
             // Columna 2: Inventarios (con un fondo sutil para contraste)
@@ -132,22 +143,6 @@ fun ContentDrawer(
                 }
             }
         }
-
-        HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
-
-        // Acción de Cerrar Sesión
-        CustomText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.surface)
-                .clickable { onClosedSession() }
-                .padding(ContentInsetEight),
-            text = "Cerrar Sesión",
-            color = MaterialTheme.colorScheme.error,
-            fontSize = DynamicTextFourteen,
-            maxLines = 1
-        )
-
         FooterDrawer()
     }
 }
