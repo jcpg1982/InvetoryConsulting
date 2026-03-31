@@ -2,7 +2,6 @@ package pe.com.master.machines.design.components.text
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,9 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
-import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.design.theme.DynamicTextTwentyFour
 import pe.com.master.machines.design.theme.robotoRegular
 
@@ -58,28 +55,4 @@ fun CustomText(
         onTextLayout = onTextLayout,
         fontStyle = fontStyle
     )
-}
-
-@Preview
-@Composable
-fun CustomTextLightPreview() {
-    ConsultaInventarioTheme(darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            CustomText(
-                text = "Texto en Modo Claro (On Surface)",
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun CustomTextDarkPreview() {
-    ConsultaInventarioTheme(darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            CustomText(
-                text = "Texto en Modo Oscuro (On Surface)",
-            )
-        }
-    }
 }
