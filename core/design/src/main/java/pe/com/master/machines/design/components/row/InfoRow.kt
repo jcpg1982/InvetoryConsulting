@@ -30,6 +30,8 @@ fun InfoRow(
     value: String,
     modifier: Modifier = Modifier
 ) {
+    if (value.isBlank()) return
+
     BoxWithConstraints(
         modifier.fillMaxWidth(),
         content = {
