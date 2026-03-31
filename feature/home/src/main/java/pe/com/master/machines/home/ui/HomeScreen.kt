@@ -50,7 +50,7 @@ fun HomeScreen(
     val scanner = remember { GmsBarcodeScanning.getClient(context) }
 
     var imageUrl by rememberSaveable { mutableStateOf("") }
-    var searchText by rememberSaveable { mutableStateOf("58222210020255") }
+    var searchText by rememberSaveable { mutableStateOf("") }
     var messageError by rememberSaveable { mutableStateOf("") }
     var messageLoading by rememberSaveable { mutableStateOf("") }
     var activePdaState by remember { mutableStateOf<ActivePda?>(null) }

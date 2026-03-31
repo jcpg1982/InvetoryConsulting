@@ -29,7 +29,7 @@ class LoginViewmodel @Inject constructor(
     private var _loginUserState = MutableStateFlow<LoginState>(LoginState.First)
     val loginUserState get() = _loginUserState.asStateFlow()
 
-    private var _documentNumber = MutableStateFlow("41245554")
+    private var _documentNumber = MutableStateFlow("")
     val documentNumber get() = _documentNumber.asStateFlow()
 
     fun updateDocumentNumber(value: String) {
