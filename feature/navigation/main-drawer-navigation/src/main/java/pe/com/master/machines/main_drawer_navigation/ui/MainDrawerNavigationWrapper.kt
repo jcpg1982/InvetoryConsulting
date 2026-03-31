@@ -34,7 +34,8 @@ import pe.com.master.machines.model.sealed.MainRoutes
 @Composable
 fun MainDrawerNavigationWrapper(
     data: Data,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToFullImage: (String) -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -105,7 +106,8 @@ fun MainDrawerNavigationWrapper(
                             entry<MainRoutes.HomeRoute> {
                                 HomeScreen(
                                     sociedadId = idSociedad ?: -1,
-                                    inventoryId = idInventory ?: -1
+                                    inventoryId = idInventory ?: -1,
+                                    onNavigateToFullImage = onNavigateToFullImage
                                 )
                             }
                         },

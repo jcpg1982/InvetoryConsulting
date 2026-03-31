@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "pe.com.master.machines.root_navigation"
+    namespace = "pe.com.master.machines.full_image"
     compileSdk {
         version = release(libs.versions.compileSdk.get().toInt()) {
             minorApiLevel = 1
@@ -38,11 +38,10 @@ android {
 
 dependencies {
 
+    implementation(projects.core.common)
     implementation(projects.core.design)
     implementation(projects.layers.model)
-    implementation(projects.feature.login)
-    implementation(projects.feature.navigation.mainDrawerNavigation)
-    implementation(projects.feature.fullImage)
+    implementation(projects.layers.domain)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -51,23 +50,28 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //Compose
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    //Navigation 3
-    implementation(libs.androidx.navigation3.runtime)
-    implementation(libs.androidx.navigation3.ui)
+
+    // Navigation 3
     implementation(libs.kotlinx.serialization.json)
-    //Hilt
+    implementation(libs.androidx.navigation3.runtime)
+
+    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
-    //test
+
+    testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     //icons
     implementation(libs.androidx.compose.material.icons.extended)
 }

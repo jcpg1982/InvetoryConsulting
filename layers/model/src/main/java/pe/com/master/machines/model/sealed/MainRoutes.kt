@@ -15,4 +15,7 @@ sealed class MainRoutes : NavKey {
     @Serializable
     data object HomeRoute : MainRoutes()
 
+    @Serializable
+    data class FullImageRoute(val imageUrl: String) : MainRoutes()
+
 }

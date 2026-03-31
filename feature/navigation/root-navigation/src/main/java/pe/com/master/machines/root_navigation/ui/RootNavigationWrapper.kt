@@ -12,6 +12,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import pe.com.master.machines.design.utils.Utils.horizontalSlideTransition
+import pe.com.master.machines.full_image.ui.FullImageScreen
 import pe.com.master.machines.login.ui.LoginScreen
 import pe.com.master.machines.main_drawer_navigation.ui.MainDrawerNavigationWrapper
 import pe.com.master.machines.model.sealed.MainRoutes
@@ -45,6 +46,17 @@ fun RootNavigationWrapper(
                     onNavigateToLogin = {
                         backStack.clear()
                         backStack.add(MainRoutes.LoginRoute)
+                    },
+                    onNavigateToFullImage = {
+                        backStack.add(MainRoutes.FullImageRoute(it))
+                    }
+                )
+            }
+            entry<MainRoutes.FullImageRoute> {
+                FullImageScreen(
+                    imageUrl = it.imageUrl,
+                    onNavigateToBack = {
+                        backStack.removeLastOrNull()
                     }
                 )
             }

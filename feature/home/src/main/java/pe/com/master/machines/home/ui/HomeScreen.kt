@@ -1,5 +1,6 @@
 package pe.com.master.machines.home.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,11 +19,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import pe.com.master.machines.design.components.dialogs.DialogAlert
 import pe.com.master.machines.design.components.dialogs.LoadingDialog
+import pe.com.master.machines.design.components.images.CustomImage
 import pe.com.master.machines.design.components.row.InfoRow
 import pe.com.master.machines.design.components.text.CustomText
 import pe.com.master.machines.design.components.text.SearchText
@@ -37,6 +40,7 @@ import pe.com.master.machines.model.model.ActivePda
 fun HomeScreen(
     sociedadId: Int,
     inventoryId: Int,
+    onNavigateToFullImage: (String) -> Unit,
     viewModel: HomeViewmodel = hiltViewModel()
 ) {
 
@@ -126,6 +130,19 @@ fun HomeScreen(
                 item { InfoRow(label = "Horómetro", value = active.horometro.toString()) }
                 item { InfoRow(label = "Fecha Modif.", value = active.fechaUltModificacion) }
                 item { InfoRow(label = "Observación", value = active.desObservacionNew) }
+                if (active.fotoPathUrl.isNotBlank()) {
+                    item {
+                        CustomImage(
+                            model = active.fotoPathUrl,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = ContentInsetEight)
+                                .clickable { onNavigateToFullImage(active.fotoPathUrl) },
+                            contentScale = ContentScale.Crop,
+                            viewShimmer = true
+                        )
+                    }
+                }
             }
         }
     }

@@ -16,10 +16,11 @@
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/core/preferences" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/full-image" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/login" />
             <option value="$PROJECT_DIR$/feature/navigation" />
-            <option value="$PROJECT_DIR$/feature/navigation/main_drawer_navigation" />
+            <option value="$PROJECT_DIR$/feature/navigation/main-drawer-navigation" />
             <option value="$PROJECT_DIR$/feature/navigation/root-navigation" />
             <option value="$PROJECT_DIR$/layers" />
             <option value="$PROJECT_DIR$/layers/data" />

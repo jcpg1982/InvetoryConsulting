@@ -39,7 +39,7 @@ fun SearchText(
     onMessageSearch: (String) -> Unit
 ) {
 
-    var filterName by rememberSaveable { mutableStateOf("") }
+    var filterName by rememberSaveable { mutableStateOf("58222210020255") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
