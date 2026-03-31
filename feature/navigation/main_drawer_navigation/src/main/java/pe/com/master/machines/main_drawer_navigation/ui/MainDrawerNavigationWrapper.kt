@@ -68,9 +68,10 @@ fun MainDrawerNavigationWrapper(
                     scope.launch {
                         drawerState.close()
                         if (inventoryId != idInventory) {
-                            title = data.listSociedades[sociedadId].sociedadName
-                            subTitle =
-                                data.listSociedades[sociedadId].listInventories[inventoryId].inventoryName
+                            val sociedad = data.listSociedades.find { it.id == sociedadId }
+                            val inventory = sociedad?.listInventories?.find { it.id == inventoryId }
+                            title = sociedad?.sociedadName.orEmpty()
+                            subTitle = inventory?.inventoryName.orEmpty()
                             idSociedad = sociedadId
                             idInventory = inventoryId
                         }

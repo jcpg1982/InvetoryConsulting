@@ -57,7 +57,7 @@ fun HeaderDrawer(
         CustomText(
             modifier = Modifier
                 .fillMaxWidth(),
-            text = "${data.userId}",
+            text = data.documentNumber,
             color = Color.White,
             fontSize = DynamicTextFourteen,
             fontWeight = FontWeight.Bold
@@ -73,7 +73,7 @@ fun PreviewHeaderDrawerLight() {
     ) {
         HeaderDrawer(
             data = Data(
-                userId = 1982,
+                documentNumber = "1982",
                 userName = "Jak Motero",
                 listSociedades = listOf()
             )
@@ -89,7 +89,7 @@ fun PreviewHeaderDrawerDark() {
     ) {
         HeaderDrawer(
             data = Data(
-                userId = 1982,
+                documentNumber = "1982",
                 userName = "Jak Motero",
                 listSociedades = listOf()
             )

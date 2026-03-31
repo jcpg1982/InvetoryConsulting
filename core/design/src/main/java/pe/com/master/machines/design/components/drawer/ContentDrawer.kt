@@ -28,6 +28,7 @@ import pe.com.master.machines.design.theme.DynamicTextFourteen
 import pe.com.master.machines.model.model.Data
 import pe.com.master.machines.model.model.Inventory
 import pe.com.master.machines.model.model.Sociedad
+import kotlin.collections.listOf
 
 @Composable
 fun ContentDrawer(
@@ -39,11 +40,14 @@ fun ContentDrawer(
 ) {
 
     var selectedSociedad by remember {
-        mutableStateOf(listItems.first())
+        mutableStateOf(listItems.firstOrNull())
+    }
+    var listInventory by remember(selectedSociedad) {
+        mutableStateOf(selectedSociedad?.listInventories ?: listOf())
     }
 
-    var selectedInventory by remember(selectedSociedad) {
-        mutableStateOf(selectedSociedad.listInventories.first())
+    var selectedInventory by remember {
+        mutableStateOf(listInventory.firstOrNull())
     }
 
     Column(
@@ -107,7 +111,7 @@ fun ContentDrawer(
                         .fillMaxSize()
                         .weight(1f),
                     content = {
-                        items(selectedSociedad.listInventories) { item ->
+                        items(listInventory) { item ->
                             val isSelected = item == selectedInventory
                             val (colorBackGround, colorText) = if (isSelected) Pair(
                                 ColorBlack.copy(alpha = 0.3f),
@@ -124,10 +128,9 @@ fun ContentDrawer(
                                     .weight(1f)
                                     .padding(ContentInsetEight)
                                     .clickable {
-                                        onItemSelected(
-                                            selectedSociedad.id,
-                                            selectedInventory.id
-                                        )
+                                        selectedSociedad?.let {
+                                            onItemSelected(it.id, item.id)
+                                        }
                                     },
                                 text = item.inventoryName,
                                 color = colorText,
@@ -194,7 +197,7 @@ fun PreviewDarkContentDrawer() {
         ContentDrawer(
             listItems = listSociedad,
             data = Data(
-                userId = 1982,
+                documentNumber = "1982",
                 userName = "Jak Motero",
                 listSociedades = listOf()
             ),
@@ -213,7 +216,7 @@ fun PreviewLightContentDrawer() {
         ContentDrawer(
             listItems = listSociedad,
             data = Data(
-                userId = 1982,
+                documentNumber = "1982",
                 userName = "Jak Motero",
                 listSociedades = listOf()
             ),

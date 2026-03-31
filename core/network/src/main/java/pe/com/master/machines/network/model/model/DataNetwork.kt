@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DataNetwork(
-    @SerialName("id_usuario")
-    val userId: Int? = null,
+    @SerialName("nro_documento")
+    val documentNumber: String? = null,
     @SerialName("nombre")
     val userName: String? = null,
     @SerialName("sociedades")

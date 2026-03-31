@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Data(
-    val userId: Int,
+    val documentNumber: String,
     val userName: String,
     val listSociedades: List<Sociedad>
 )
