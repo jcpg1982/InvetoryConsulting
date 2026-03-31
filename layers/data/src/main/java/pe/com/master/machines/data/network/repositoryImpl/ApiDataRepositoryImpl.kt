@@ -26,8 +26,8 @@ class ApiDataRepositoryImpl @Inject constructor(
             emit(Resource.Error(e.toErrorType()))
         }
 
-    override fun buscarActivo(userId: Int, invId: Int, barcode: String) =
-        apiNetworkRepository.buscarActivo(userId, invId, barcode).map { res ->
+    override fun buscarActivo(sociedadId: Int, invId: Int, barcode: String) =
+        apiNetworkRepository.buscarActivo(sociedadId, invId, barcode).map { res ->
             when (res) {
                 is Resource.Success -> Resource.Success(res.data.asModelActivePda())
                 is Resource.Error -> Resource.Error(res.errorType)

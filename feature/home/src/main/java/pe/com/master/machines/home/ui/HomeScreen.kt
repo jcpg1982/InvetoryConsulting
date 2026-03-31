@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pe.com.master.machines.design.components.text.CustomTextInput
+import pe.com.master.machines.design.components.text.SearchText
 import pe.com.master.machines.design.theme.ContentInsetEight
 import pe.com.master.machines.design.theme.ContentInsetSixteen
 import pe.com.master.machines.home.viewmodel.HomeViewmodel
@@ -33,11 +35,14 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(ContentInsetEight))
 
-            CustomTextInput(
-                modifier = Modifier.fillMaxWidth(),
-                value = "",
-                hintText = "Ingrese el código",
-                maxCharacter = 50
+            SearchText(
+                hintSearch = "Ingresar código",
+                maxCharacter = 10,
+                primaryColor = Color.Red,
+                colorText = Color.Black,
+                onMessageSearch = {
+                    viewModel.getSearchActivePda(sociedadId, inventoryId, it)
+                }
             )
 
         }

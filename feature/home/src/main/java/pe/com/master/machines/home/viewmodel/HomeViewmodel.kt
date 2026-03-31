@@ -28,13 +28,13 @@ class HomeViewmodel @Inject constructor(
     private var _homeState = MutableStateFlow<HomeState>(HomeState.First)
     val homeState get() = _homeState.asStateFlow()
 
-    fun getSearchActivePda(userId: Int, invId: Int, barcode: String) {
+    fun getSearchActivePda(sociedadId: Int, invId: Int, barcode: String) {
         Log.d(
             TAG,
-            "getSearchActivePda: Iniciando proceso userId: $userId, invId: $invId, barcode: $barcode"
+            "getSearchActivePda: Iniciando proceso sociedadId: $sociedadId, invId: $invId, barcode: $barcode"
         )
         viewModelScope.launch {
-            searchActiveUsesCase.invoke(userId, invId, barcode)
+            searchActiveUsesCase.invoke(sociedadId, invId, barcode)
                 .flowOn(Dispatchers.IO)
                 .onStart {
                     Log.d(TAG, "getSearchActivePda: onStart - Actualizando a estado Loading")

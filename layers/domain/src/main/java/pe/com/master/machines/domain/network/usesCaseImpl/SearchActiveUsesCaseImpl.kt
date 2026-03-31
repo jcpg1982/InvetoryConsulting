@@ -8,6 +8,6 @@ class SearchActiveUsesCaseImpl @Inject constructor(
     private val apiDataRepository: ApiDataRepository
 ) : SearchActiveUsesCase {
 
-    override fun invoke(userId: Int, invId: Int, barcode: String) =
-        apiDataRepository.buscarActivo(userId, invId, barcode)
+    override fun invoke(sociedadId: Int, invId: Int, barcode: String) =
+        apiDataRepository.buscarActivo(sociedadId, invId, barcode)
 }

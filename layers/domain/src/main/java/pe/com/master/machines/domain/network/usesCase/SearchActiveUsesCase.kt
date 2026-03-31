@@ -6,6 +6,6 @@ import pe.com.master.machines.model.model.ActivePda
 
 interface SearchActiveUsesCase {
 
-    operator fun invoke(userId: Int, invId: Int, barcode: String): Flow<Resource<ActivePda>>
+    operator fun invoke(sociedadId: Int, invId: Int, barcode: String): Flow<Resource<ActivePda>>
 
 }

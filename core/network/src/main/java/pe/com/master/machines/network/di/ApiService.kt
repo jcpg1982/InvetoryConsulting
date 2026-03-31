@@ -1,6 +1,5 @@
 package pe.com.master.machines.network.di
 
-import pe.com.master.machines.network.model.model.ActivePdaNetwork
 import pe.com.master.machines.network.model.request.RequestLoginUserNetwork
 import pe.com.master.machines.network.model.response.ResponseLoginUserNetwork
 import pe.com.master.machines.network.utils.Constants
@@ -17,7 +16,7 @@ interface ApiService {
 
     @GET(Constants.SEARCH_ACTIVE)
     suspend fun buscarActivo(
-        @Path("id_usuario") userId: Int,
+        @Path("id_sociedad") sociedadId: Int,
         @Path("id_inventario") invId: Int,
         @Path("cod_barra") barcode: String
     ): Response<ActivePdaNetwork>

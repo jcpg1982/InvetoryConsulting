@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.design.theme.DynamicTextFourteen
 import pe.com.master.machines.design.theme.DynamicTextSixteen
 import pe.com.master.machines.design.theme.robotoRegular
@@ -30,8 +31,9 @@ import pe.com.master.machines.design.theme.robotoRegular
 @Composable
 fun SearchText(
     hintSearch: String,
-    primaryColor: Color,
-    colorText: Color,
+    modifier: Modifier = Modifier,
+    primaryColor: Color = MaterialTheme.colorScheme.primary,
+    colorText: Color = MaterialTheme.colorScheme.onSurface,
     imeAction: ImeAction = ImeAction.Search,
     maxCharacter: Int = 50,
     onMessageSearch: (String) -> Unit
@@ -45,10 +47,9 @@ fun SearchText(
         onValueChange = {
             if (it.length <= maxCharacter) {
                 filterName = it
-                onMessageSearch(filterName.lowercase())
             }
         },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         textStyle = TextStyle(
             color = colorText,
             fontSize = DynamicTextFourteen,
@@ -60,46 +61,66 @@ fun SearchText(
                 fontSize = DynamicTextSixteen,
                 color = colorText.copy(alpha = 0.5f)
             )
-        }, leadingIcon = {
+        },
+        leadingIcon = {
             Icon(
                 imageVector = Icons.Filled.Search,
-                contentDescription = "open drop down",
-                tint = MaterialTheme.colorScheme.onPrimary
+                contentDescription = "Search Icon",
+                tint = primaryColor
             )
-        }, trailingIcon = {
+        },
+        trailingIcon = {
             if (filterName.isNotEmpty()) {
                 Icon(
                     imageVector = Icons.Filled.Close,
-                    contentDescription = "clear data",
+                    contentDescription = "Clear text",
                     modifier = Modifier.clickable {
                         filterName = ""
-                        onMessageSearch(filterName)
+                        onMessageSearch("")
                     },
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = primaryColor
                 )
             }
-        }, keyboardOptions = KeyboardOptions(
+        },
+        keyboardOptions = KeyboardOptions(
             imeAction = imeAction
-        ), keyboardActions = KeyboardActions(
-            onSearch = { keyboardController?.hide() }
-        ), minLines = 1,
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onMessageSearch(filterName.trim().lowercase())
+                keyboardController?.hide()
+            }
+        ),
+        minLines = 1,
         maxLines = 1,
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
-            unfocusedBorderColor = primaryColor,
-            focusedBorderColor = primaryColor
+            unfocusedBorderColor = primaryColor.copy(alpha = 0.5f),
+            focusedBorderColor = primaryColor,
+            cursorColor = primaryColor
         )
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun GetPreviewSearchText() {
-    SearchText(
-        hintSearch = "Buscar",
-        maxCharacter = 10,
-        primaryColor = Color.Red,
-        colorText = Color.Black
-    ) { }
+fun GetPreviewSearchTextLight() {
+    ConsultaInventarioTheme(darkTheme = false) {
+        SearchText(
+            hintSearch = "Buscar",
+            onMessageSearch = { }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GetPreviewSearchTextDark() {
+    ConsultaInventarioTheme(darkTheme = true) {
+        SearchText(
+            hintSearch = "Buscar",
+            onMessageSearch = { }
+        )
+    }
 }

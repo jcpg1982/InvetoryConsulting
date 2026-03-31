@@ -36,9 +36,9 @@ class ApiNetworkRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun buscarActivo(userId: Int, invId: Int, barcode: String) = flow {
+    override fun buscarActivo(sociedadId: Int, invId: Int, barcode: String) = flow {
         try {
-            val response = apiService.buscarActivo(userId, invId, barcode)
+            val response = apiService.buscarActivo(sociedadId, invId, barcode)
             if (response.isSuccessful) {
                 emit(Resource.Success(response.body()))
             } else {

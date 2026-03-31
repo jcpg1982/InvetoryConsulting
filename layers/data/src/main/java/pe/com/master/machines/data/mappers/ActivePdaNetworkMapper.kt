@@ -1,7 +1,6 @@
 package pe.com.master.machines.data.mappers
 
 import pe.com.master.machines.model.model.ActivePda
-import pe.com.master.machines.network.model.model.ActivePdaNetwork
 
 fun ActivePdaNetwork?.asModelActivePda() = ActivePda(
     codBarraNew = this?.codBarraNew.orEmpty(),
