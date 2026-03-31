@@ -24,7 +24,9 @@ inline fun <reified T> ItemsSearch(
     colorText: Color,
     crossinline onItemsCallback: (Int, T) -> Unit
 ) {
+    var searchText by remember { mutableStateOf("") }
     var filteredList by remember { mutableStateOf(listItems) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -33,19 +35,17 @@ inline fun <reified T> ItemsSearch(
     ) {
         SearchText(
             hintSearch = hintSearch,
-            maxCharacter = 10,
+            value = searchText,
+            onValueChange = { searchText = it },
+            maxCharacter = 100,
             primaryColor = primaryColor,
             colorText = colorText,
-            onMessageSearch = {
-                filteredList = if (it.isEmpty()) {
+            onMessageSearch = { query ->
+                filteredList = if (query.isEmpty()) {
                     listItems
                 } else {
                     listItems.filter { data ->
-                        when (data) {
-                            else -> {
-                                data.toString().lowercase().contains(it)
-                            }
-                        }
+                        data.toString().lowercase().contains(query.lowercase())
                     }
                 }
             }

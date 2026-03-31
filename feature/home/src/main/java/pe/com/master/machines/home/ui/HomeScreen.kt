@@ -20,9 +20,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import pe.com.master.machines.design.components.dialogs.DialogAlert
 import pe.com.master.machines.design.components.dialogs.LoadingDialog
 import pe.com.master.machines.design.components.images.CustomImage
@@ -43,7 +45,10 @@ fun HomeScreen(
     onNavigateToFullImage: (String) -> Unit,
     viewModel: HomeViewmodel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    val scanner = remember { GmsBarcodeScanning.getClient(context) }
 
+    var searchText by rememberSaveable { mutableStateOf("58222210020255") }
     var messageError by rememberSaveable { mutableStateOf("") }
     var messageLoading by rememberSaveable { mutableStateOf("") }
     var activePdaState by remember { mutableStateOf<ActivePda?>(null) }
@@ -82,11 +87,26 @@ fun HomeScreen(
 
         SearchText(
             hintSearch = "Ingresar código de barra",
+            value = searchText,
+            onValueChange = { searchText = it },
             maxCharacter = 100,
             onMessageSearch = { query ->
                 if (query.isNotBlank()) {
                     viewModel.getSearchActivePda(sociedadId, inventoryId, query)
                 }
+            },
+            onScanClick = {
+                scanner.startScan()
+                    .addOnSuccessListener { barcode ->
+                        val rawValue: String? = barcode.rawValue
+                        rawValue?.let {
+                            searchText = it
+                            viewModel.getSearchActivePda(sociedadId, inventoryId, it)
+                        }
+                    }
+                    .addOnFailureListener {
+                        messageError = "Error al escanear: ${it.message}"
+                    }
             }
         )
 
@@ -131,13 +151,14 @@ fun HomeScreen(
                 item { InfoRow(label = "Fecha Modif.", value = active.fechaUltModificacion) }
                 item { InfoRow(label = "Observación", value = active.desObservacionNew) }
                 if (active.fotoPathUrl.isNotBlank()) {
+                    val photo = "https://api.dmycm.com.pe/robocon-storage${active.fotoPathUrl}"
                     item {
                         CustomImage(
-                            model = active.fotoPathUrl,
+                            model = photo,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = ContentInsetEight)
-                                .clickable { onNavigateToFullImage(active.fotoPathUrl) },
+                                .clickable { onNavigateToFullImage(photo) },
                             contentScale = ContentScale.Crop,
                             viewShimmer = true
                         )

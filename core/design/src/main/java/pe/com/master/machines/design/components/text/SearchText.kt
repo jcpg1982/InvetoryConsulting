@@ -1,21 +1,21 @@
 package pe.com.master.machines.design.components.text
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.design.theme.DynamicTextFourteen
 import pe.com.master.machines.design.theme.DynamicTextSixteen
@@ -31,22 +32,24 @@ import pe.com.master.machines.design.theme.robotoRegular
 @Composable
 fun SearchText(
     hintSearch: String,
+    value: String,
     modifier: Modifier = Modifier,
     primaryColor: Color = MaterialTheme.colorScheme.primary,
     colorText: Color = MaterialTheme.colorScheme.onSurface,
     imeAction: ImeAction = ImeAction.Search,
-    maxCharacter: Int = 50,
-    onMessageSearch: (String) -> Unit
+    maxCharacter: Int = 100,
+    onMessageSearch: (String) -> Unit,
+    onScanClick: () -> Unit = {},
+    onValueChange: (String) -> Unit = {},
 ) {
 
-    var filterName by rememberSaveable { mutableStateOf("58222210020255") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
-        value = filterName,
+        value = value,
         onValueChange = {
             if (it.length <= maxCharacter) {
-                filterName = it
+                onValueChange(it)
             }
         },
         modifier = modifier.fillMaxWidth(),
@@ -70,14 +73,27 @@ fun SearchText(
             )
         },
         trailingIcon = {
-            if (filterName.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(end = 8.dp)
+            ) {
+                if (value.isNotEmpty()) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Clear text",
+                        modifier = Modifier.clickable {
+                            onValueChange("")
+                            onMessageSearch("")
+                        },
+                        tint = primaryColor
+                    )
+                }
                 Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = "Clear text",
-                    modifier = Modifier.clickable {
-                        filterName = ""
-                        onMessageSearch("")
-                    },
+                    imageVector = Icons.Filled.QrCodeScanner,
+                    contentDescription = "Scan barcode",
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable { onScanClick() },
                     tint = primaryColor
                 )
             }
@@ -87,7 +103,7 @@ fun SearchText(
         ),
         keyboardActions = KeyboardActions(
             onSearch = {
-                onMessageSearch(filterName.trim().lowercase())
+                onMessageSearch(value.trim())
                 keyboardController?.hide()
             }
         ),
@@ -109,6 +125,7 @@ fun GetPreviewSearchTextLight() {
     ConsultaInventarioTheme(darkTheme = false) {
         SearchText(
             hintSearch = "Buscar",
+            value = "",
             onMessageSearch = { }
         )
     }
@@ -120,6 +137,7 @@ fun GetPreviewSearchTextDark() {
     ConsultaInventarioTheme(darkTheme = true) {
         SearchText(
             hintSearch = "Buscar",
+            value = "",
             onMessageSearch = { }
         )
     }

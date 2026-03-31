@@ -27,6 +27,7 @@ coil = "3.4.0"
 mockk = "1.14.9"
 kotlinxCoroutinesTest = "1.10.2"
 turbine = "1.2.1"
+playServicesCodeScanner = "16.1.0"
 
 
 [libraries]
@@ -77,6 +78,8 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+# Barcode Scanner
+play-services-code-scanner = { group = "com.google.android.gms", name = "play-services-code-scanner", version.ref = "playServicesCodeScanner" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -85,5 +88,3 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-
-
