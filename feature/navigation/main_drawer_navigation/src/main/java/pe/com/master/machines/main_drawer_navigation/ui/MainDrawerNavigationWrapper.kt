@@ -51,10 +51,6 @@ fun MainDrawerNavigationWrapper(
         MainRoutes.HomeRoute
     )
 
-    val currentRoute = remember(backStack) {
-        backStack.lastOrNull()
-    }
-
     ModalNavigationDrawer(
         modifier = Modifier.fillMaxSize(),
         drawerState = drawerState,
