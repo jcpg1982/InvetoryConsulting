@@ -1,6 +1,7 @@
 package pe.com.master.machines.design.components.row
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,51 +31,64 @@ fun InfoRow(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = ContentInsetEight),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
-        // El label ocupa solo lo que necesita, pero permitimos que crezca hasta la mitad si es necesario
         CustomText(
             text = label,
-            modifier = Modifier.weight(1f, fill = false),
+            modifier = Modifier.weight(4f, fill = false),
             fontSize = DynamicTextFourteen,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1
+            maxLines = 2
         )
 
         val dotColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
         
-        // El Canvas tiene weight(1f) y fill = true (por defecto), 
-        // lo que hace que expanda y empuje al 'value' hacia la derecha.
-        Canvas(
+        Box(
             modifier = Modifier
-                .weight(1f)
+                .weight(2f)
                 .padding(horizontal = 8.dp)
-                .height(1.dp)
+                .height(20.dp),
+            contentAlignment = Alignment.Center
         ) {
-            drawLine(
-                color = dotColor,
-                start = Offset(0f, 0f),
-                end = Offset(size.width, 0f),
-                pathEffect = PathEffect.dashPathEffect(floatArrayOf(2.dp.toPx(), 4.dp.toPx()), 0f),
-                strokeWidth = 2.dp.toPx()
-            )
+            Canvas(
+                modifier = Modifier.fillMaxWidth().height(1.dp)
+            ) {
+                drawLine(
+                    color = dotColor,
+                    start = Offset(0f, 0f),
+                    end = Offset(size.width, 0f),
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(2.dp.toPx(), 4.dp.toPx()), 0f),
+                    strokeWidth = 2.dp.toPx()
+                )
+            }
         }
 
-        // El value ocupa solo lo que necesita y se mantiene al final del Row
         CustomText(
             text = value,
+            modifier = Modifier.weight(5f, fill = false),
             fontSize = DynamicTextFourteen,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.End,
-            maxLines = 1
+            maxLines = 3
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewInfoRow() {
+fun PreviewInfoRowLong() {
+    ConsultaInventarioTheme {
+        InfoRow(
+            label = "Descripción del Activo Fijo", 
+            value = "Caterpillar 320 GC con motor C4.4 y sistema hidráulico avanzado de alto rendimiento"
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewInfoRowShort() {
     ConsultaInventarioTheme {
         InfoRow(label = "Marca", value = "Caterpillar")
     }
