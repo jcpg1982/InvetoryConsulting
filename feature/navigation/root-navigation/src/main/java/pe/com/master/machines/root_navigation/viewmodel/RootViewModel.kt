@@ -49,20 +49,24 @@ class RootViewModel @Inject constructor(
             getDeviceConfigsUsesCase.invoke()
                 .flowOn(Dispatchers.IO)
                 .onStart { }
-                .catch { }
+                .catch {
+                    _isDeviceAuthorized.update { false }
+                    checkDeviceAuthorization()
+                }
                 .collect { res ->
                     when (res) {
-                        is Resource.Error -> {}
-                        is Resource.Success -> {}
-                    }
-                    /*val deviceConfig = configs.find { it.deviceId == androidId }
+                        is Resource.Error -> {
+                            _isDeviceAuthorized.update { false }
+                            checkDeviceAuthorization()
+                        }
 
-                    if (deviceConfig != null && deviceConfig.isActive) {
-                        _currentDeviceConfig.value = deviceConfig
-                        _isDeviceAuthorized.value = true
-                    } else {
-                        _isDeviceAuthorized.value = false
-                    }*/
+                        is Resource.Success -> {
+                            val deviceConfig = res.data.find { it.deviceId == deviceId.value }
+                            _isDeviceAuthorized.update {
+                                deviceConfig != null && deviceConfig.isActive
+                            }
+                        }
+                    }
                 }
         }
     }

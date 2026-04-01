@@ -18,6 +18,7 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import pe.com.master.machines.design.utils.Utils.horizontalSlideTransition
 import pe.com.master.machines.design.components.custom.StatusScreen
+import pe.com.master.machines.design.components.dialogs.LoadingDialog
 import pe.com.master.machines.login.ui.LoginScreen
 import pe.com.master.machines.main_drawer_navigation.ui.MainDrawerNavigationWrapper
 import pe.com.master.machines.model.sealed.MainRoutes
@@ -32,11 +33,7 @@ fun RootNavigationWrapper(
     val deviceId by viewModel.deviceId.collectAsState()
 
     when (isAuthorized) {
-        null -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        }
+        null -> LoadingDialog()
 
         false -> {
             StatusScreen(
