@@ -36,7 +36,9 @@ fun StatusScreen(
     onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(ContentInsetThirtyTwo),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(ContentInsetThirtyTwo),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -58,13 +60,16 @@ fun StatusScreen(
             description,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 10
         )
         Spacer(Modifier.height(ContentInsetForty))
         buttonLabel?.let {
             Button(
                 onClick = onClick,
-                modifier = Modifier.fillMaxWidth().height(ContentInsetFiftySix),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(ContentInsetFiftySix),
                 shape = RoundedCornerShape(ContentInsetSixteen)
             ) {
                 CustomText(
