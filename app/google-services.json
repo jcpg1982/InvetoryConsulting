@@ -1,0 +1,259 @@
+{
+  "project_info": {
+    "project_number": "258315085194",
+    "firebase_url": "https://devtest-e7d7e-default-rtdb.firebaseio.com",
+    "project_id": "devtest-e7d7e",
+    "storage_bucket": "devtest-e7d7e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258315085194:android:1c1b1d36efe6d40d001473",
+        "android_client_info": {
+          "package_name": "pe.com.claro.testdevelocidad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258315085194-i6jm2bhlf39ddelik5dfop38daphikjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSKoGRfaYqMVajx0zfts5kd4aabpYOkKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258315085194-6uafptejiif5h79lfiqvlh3qjh2hak3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "258315085194-9vqevljgb4agocld2c2cee0risgcni4c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pe.com.master.machines.meetflow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258315085194:android:f0487325f2571b84001473",
+        "android_client_info": {
+          "package_name": "pe.com.claro.testdevelocidad.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258315085194-i6jm2bhlf39ddelik5dfop38daphikjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSKoGRfaYqMVajx0zfts5kd4aabpYOkKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258315085194-6uafptejiif5h79lfiqvlh3qjh2hak3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "258315085194-9vqevljgb4agocld2c2cee0risgcni4c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pe.com.master.machines.meetflow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258315085194:android:4315a5cf2642499f001473",
+        "android_client_info": {
+          "package_name": "pe.com.master.machines.consulta_inventario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258315085194-i6jm2bhlf39ddelik5dfop38daphikjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSKoGRfaYqMVajx0zfts5kd4aabpYOkKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258315085194-6uafptejiif5h79lfiqvlh3qjh2hak3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "258315085194-9vqevljgb4agocld2c2cee0risgcni4c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pe.com.master.machines.meetflow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258315085194:android:50aa236337bdf2bd001473",
+        "android_client_info": {
+          "package_name": "pe.com.master.machines.drivephotos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258315085194-5e2fvh12d8shkjth911m2utijsnte818.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.com.master.machines.drivephotos",
+            "certificate_hash": "818272145357da6b2df57471b3f800d928af8a5f"
+          }
+        },
+        {
+          "client_id": "258315085194-ctvrd0ajpkub76bc6hgt5r20eqqhmha3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.com.master.machines.drivephotos",
+            "certificate_hash": "a703a330d2c3b72a80ffc52d1436fa4c17682514"
+          }
+        },
+        {
+          "client_id": "258315085194-i6jm2bhlf39ddelik5dfop38daphikjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSKoGRfaYqMVajx0zfts5kd4aabpYOkKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258315085194-6uafptejiif5h79lfiqvlh3qjh2hak3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "258315085194-9vqevljgb4agocld2c2cee0risgcni4c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pe.com.master.machines.meetflow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258315085194:android:c631e4da6140bfcb001473",
+        "android_client_info": {
+          "package_name": "pe.com.master.machines.financieraoh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258315085194-fbj15p2pc6ae38mfd4uj58grth5ba4ru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.com.master.machines.financieraoh",
+            "certificate_hash": "33b7fd65eaa5a7cdebceac2ba2ab65cc37bcad2b"
+          }
+        },
+        {
+          "client_id": "258315085194-uphfduqckd0tlia1a0bmnvtc06eteqqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.com.master.machines.financieraoh",
+            "certificate_hash": "227279118cb3bc3a9a6e453b3d874031233734cf"
+          }
+        },
+        {
+          "client_id": "258315085194-i6jm2bhlf39ddelik5dfop38daphikjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSKoGRfaYqMVajx0zfts5kd4aabpYOkKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258315085194-6uafptejiif5h79lfiqvlh3qjh2hak3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "258315085194-9vqevljgb4agocld2c2cee0risgcni4c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pe.com.master.machines.meetflow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258315085194:android:20e08f73399adc22001473",
+        "android_client_info": {
+          "package_name": "pe.com.master.machines.meet_flow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258315085194-i6jm2bhlf39ddelik5dfop38daphikjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSKoGRfaYqMVajx0zfts5kd4aabpYOkKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258315085194-6uafptejiif5h79lfiqvlh3qjh2hak3k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "258315085194-9vqevljgb4agocld2c2cee0risgcni4c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pe.com.master.machines.meetflow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

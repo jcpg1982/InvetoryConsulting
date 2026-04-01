@@ -63,7 +63,7 @@ dependencies {
     
     // Firebase (Bom is in core:firebase but can be added here too if needed for direct usage)
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.analytics)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

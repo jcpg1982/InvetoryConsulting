@@ -4,11 +4,7 @@ plugins {
 
 android {
     namespace = "pe.com.master.machines.firebase"
-    compileSdk {
-        version = release(libs.versions.compileSdk.get().toInt()) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -38,10 +34,10 @@ dependencies {
     implementation(libs.material)
     // Firebase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.config.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
-    implementation(libs.firebase.analytics.ktx)
-    // Hilt (assuming it's used based on other modules and toml)
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    // Hilt
     implementation(libs.hilt.android)
 
     testImplementation(libs.junit)

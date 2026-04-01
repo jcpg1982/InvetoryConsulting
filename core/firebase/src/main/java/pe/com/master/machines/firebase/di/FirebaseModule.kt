@@ -1,10 +1,8 @@
 package pe.com.master.machines.firebase.di
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.remoteConfig
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -29,12 +27,6 @@ abstract class FirebaseModule {
         @Singleton
         fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig {
             return Firebase.remoteConfig
-        }
-
-        @Provides
-        @Singleton
-        fun provideFirebaseCrashlytics(): FirebaseCrashlytics {
-            return Firebase.crashlytics
         }
     }
 }
