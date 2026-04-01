@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -47,6 +49,7 @@ dependencies {
 
     implementation(projects.core.common)
     implementation(projects.core.design)
+    implementation(projects.core.firebase)
     implementation(projects.feature.navigation.rootNavigation)
 
     implementation(libs.androidx.core.ktx)
@@ -57,6 +60,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    
+    // Firebase (Bom is in core:firebase but can be added here too if needed for direct usage)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
