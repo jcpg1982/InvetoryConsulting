@@ -16,8 +16,10 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import pe.com.master.machines.common.ConstantsSystemProperties.versionCodeDevice
 import pe.com.master.machines.common.Resource
 import pe.com.master.machines.domain.firebase.usesCase.GetDeviceConfigsUsesCase
+import pe.com.master.machines.model.model.RemoteDeviceConfig
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +30,15 @@ class RootViewModel @Inject constructor(
 
     private val _isDeviceAuthorized = MutableStateFlow<Boolean?>(null)
     val isDeviceAuthorized: StateFlow<Boolean?> = _isDeviceAuthorized.asStateFlow()
+
+    private val _mustUpdate = MutableStateFlow(false)
+    val mustUpdate: StateFlow<Boolean> = _mustUpdate.asStateFlow()
+
+    private val _isForceUpdate = MutableStateFlow(false)
+    val isForceUpdate: StateFlow<Boolean> = _isForceUpdate.asStateFlow()
+
+    private val _updateIgnored = MutableStateFlow(false)
+    val updateIgnored: StateFlow<Boolean> = _updateIgnored.asStateFlow()
 
     private val _deviceId = MutableStateFlow("")
     val deviceId: StateFlow<String> = _deviceId.asStateFlow()
@@ -51,23 +62,47 @@ class RootViewModel @Inject constructor(
                 .onStart { }
                 .catch {
                     _isDeviceAuthorized.update { false }
-                    checkDeviceAuthorization()
                 }
                 .collect { res ->
                     when (res) {
                         is Resource.Error -> {
                             _isDeviceAuthorized.update { false }
-                            checkDeviceAuthorization()
                         }
 
                         is Resource.Success -> {
                             val deviceConfig = res.data.find { it.deviceId == deviceId.value }
-                            _isDeviceAuthorized.update {
-                                deviceConfig != null && deviceConfig.isActive
+                            val authorized = deviceConfig != null && deviceConfig.isActive == true
+                            _isDeviceAuthorized.update { authorized }
+
+                            if (authorized) {
+                                checkUpdateStatus(deviceConfig)
                             }
                         }
                     }
                 }
         }
+    }
+
+    private fun checkUpdateStatus(config: RemoteDeviceConfig) {
+        try {
+            val remoteMajor = config.versionMajor
+            val remoteMinor = config.versionMinor
+
+            val hasNewVersion =
+                (remoteMajor > versionCodeDevice) || (remoteMinor > versionCodeDevice)
+
+            if (hasNewVersion) {
+                _mustUpdate.update { true }
+                _isForceUpdate.update { config.forceUpdate }
+            } else {
+                _mustUpdate.update { false }
+            }
+        } catch (e: Exception) {
+            _mustUpdate.update { false }
+        }
+    }
+
+    fun ignoreUpdate() {
+        _updateIgnored.update { true }
     }
 }
