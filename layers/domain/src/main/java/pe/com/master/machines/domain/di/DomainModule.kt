@@ -8,6 +8,8 @@ import pe.com.master.machines.domain.network.usesCaseImpl.LoginUserUsesCaseImpl
 import pe.com.master.machines.domain.network.usesCase.LoginUserUsesCase
 import pe.com.master.machines.domain.network.usesCase.SearchActiveUsesCase
 import pe.com.master.machines.domain.network.usesCaseImpl.SearchActiveUsesCaseImpl
+import pe.com.master.machines.domain.firebase.usesCase.GetDeviceConfigsUsesCase
+import pe.com.master.machines.domain.firebase.usesCaseImpl.GetDeviceConfigsUsesCaseImpl
 import javax.inject.Singleton
 
 @Module
@@ -21,4 +23,8 @@ abstract class DomainModule {
     @Binds
     @Singleton
     abstract fun bindSearchActiveUsesCase(impl: SearchActiveUsesCaseImpl): SearchActiveUsesCase
+
+    @Binds
+    @Singleton
+    abstract fun bindGetDeviceConfigsUsesCase(impl: GetDeviceConfigsUsesCaseImpl): GetDeviceConfigsUsesCase
 }

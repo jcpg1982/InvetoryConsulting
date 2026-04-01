@@ -10,10 +10,14 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.serialization.json.Json
+import pe.com.master.machines.common.Resource
+import pe.com.master.machines.common.toErrorType
 import pe.com.master.machines.firebase.model.RemoteDeviceConfigFirebase
 import pe.com.master.machines.firebase.repository.RemoteConfigRepository
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RemoteConfigRepositoryImpl @Inject constructor(
     private val remoteConfig: FirebaseRemoteConfig
 ) : RemoteConfigRepository {
@@ -23,10 +27,11 @@ class RemoteConfigRepositoryImpl @Inject constructor(
 
     init {
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
+            minimumFetchIntervalInSeconds = 3600 // 1 hour for standard fetch
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
 
+        // Initial fetch and activate
         remoteConfig.fetchAndActivate()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -70,21 +75,22 @@ class RemoteConfigRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getDeviceConfigs(): Flow<List<RemoteDeviceConfigFirebase>> = callbackFlow {
-        trySend(currentListDeviceConfigs())
+    override fun getDeviceConfigs() = callbackFlow {
+        trySend(Resource.Success(currentListDeviceConfigs()))
         val listener = object : ConfigUpdateListener {
             override fun onUpdate(configUpdate: ConfigUpdate) {
                 if (configUpdate.updatedKeys.contains("device_configs")) {
                     remoteConfig.activate().addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            trySend(currentListDeviceConfigs())
+                            trySend(Resource.Success(currentListDeviceConfigs()))
                         }
                     }
                 }
             }
 
             override fun onError(error: FirebaseRemoteConfigException) {
-                Log.e(TAG, "Error en actualización en tiempo real", error)
+                Log.e(TAG, "Error in real-time update", error)
+                trySend(Resource.Error(error.toErrorType()))
             }
         }
 

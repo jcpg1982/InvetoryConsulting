@@ -39,6 +39,7 @@ dependencies {
 
     implementation(projects.core.common)
     implementation(projects.core.network)
+    implementation(projects.core.firebase)
     implementation(projects.layers.model)
 
     implementation(libs.androidx.core.ktx)
