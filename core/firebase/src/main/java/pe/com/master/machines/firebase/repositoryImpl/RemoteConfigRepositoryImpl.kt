@@ -9,24 +9,24 @@ import com.google.firebase.remoteconfig.remoteConfigSettings
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.serialization.json.Json
+import pe.com.master.machines.firebase.model.RemoteDeviceConfigFirebase
 import pe.com.master.machines.firebase.repository.RemoteConfigRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class RemoteConfigRepositoryImpl @Inject constructor(
     private val remoteConfig: FirebaseRemoteConfig
 ) : RemoteConfigRepository {
 
     private val TAG = RemoteConfigRepositoryImpl::class.java.simpleName
+    private val json = Json { ignoreUnknownKeys = true }
 
     init {
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600 // 1 hour for standard fetch
+            minimumFetchIntervalInSeconds = 3600
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
-        
-        // Initial fetch and activate
+
         remoteConfig.fetchAndActivate()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -46,9 +46,7 @@ class RemoteConfigRepositoryImpl @Inject constructor(
     override fun getDouble(key: String): Double = remoteConfig.getDouble(key)
 
     override fun getStringFlow(key: String): Flow<String> = callbackFlow {
-        // Send initial value
         trySend(remoteConfig.getString(key))
-
         val listener = object : ConfigUpdateListener {
             override fun onUpdate(configUpdate: ConfigUpdate) {
                 if (configUpdate.updatedKeys.contains(key)) {
@@ -69,6 +67,45 @@ class RemoteConfigRepositoryImpl @Inject constructor(
 
         awaitClose {
             registration.remove()
+        }
+    }
+
+    override fun getDeviceConfigs(): Flow<List<RemoteDeviceConfigFirebase>> = callbackFlow {
+        trySend(currentListDeviceConfigs())
+        val listener = object : ConfigUpdateListener {
+            override fun onUpdate(configUpdate: ConfigUpdate) {
+                if (configUpdate.updatedKeys.contains("device_configs")) {
+                    remoteConfig.activate().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            trySend(currentListDeviceConfigs())
+                        }
+                    }
+                }
+            }
+
+            override fun onError(error: FirebaseRemoteConfigException) {
+                Log.e(TAG, "Error en actualización en tiempo real", error)
+            }
+        }
+
+        val registration = remoteConfig.addOnConfigUpdateListener(listener)
+
+        awaitClose {
+            registration.remove()
+        }
+    }
+
+    fun currentListDeviceConfigs(): List<RemoteDeviceConfigFirebase> {
+        val jsonString = getString("device_configs")
+        return if (jsonString.isEmpty()) {
+            emptyList()
+        } else {
+            try {
+                json.decodeFromString<List<RemoteDeviceConfigFirebase>>(jsonString)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error parsing device_configs", e)
+                emptyList()
+            }
         }
     }
 }

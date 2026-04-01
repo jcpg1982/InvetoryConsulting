@@ -18,9 +18,7 @@ abstract class FirebaseModule {
 
     @Binds
     @Singleton
-    abstract fun bindRemoteConfigRepository(
-        remoteConfigRepositoryImpl: RemoteConfigRepositoryImpl
-    ): RemoteConfigRepository
+    abstract fun bindRemoteConfigRepository(impl: RemoteConfigRepositoryImpl): RemoteConfigRepository
 
     companion object {
         @Provides
