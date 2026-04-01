@@ -38,8 +38,10 @@ android {
 
 dependencies {
 
+    implementation(projects.core.common)
     implementation(projects.core.design)
     implementation(projects.layers.model)
+    implementation(projects.layers.domain)
     implementation(projects.feature.login)
     implementation(projects.feature.navigation.mainDrawerNavigation)
 
