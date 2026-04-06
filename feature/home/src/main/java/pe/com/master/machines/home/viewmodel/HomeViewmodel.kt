@@ -58,7 +58,12 @@ class HomeViewmodel @Inject constructor(
 
                         is Resource.Success -> {
                             Log.d(TAG, "getSearchActivePda: Resource.Success - Login exitoso")
-                            _homeState.send(HomeState.SuccessSearch(res.data.data))
+                            _homeState.send(
+                                HomeState.SuccessSearch(
+                                    res.data.data,
+                                    res.data.listChildren
+                                )
+                            )
                         }
                     }
                 }

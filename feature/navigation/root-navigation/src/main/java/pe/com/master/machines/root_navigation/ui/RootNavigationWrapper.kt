@@ -51,7 +51,9 @@ fun RootNavigationWrapper(
         }
     }
 
-    when (isAuthorized) {
+    RootNavContent(modifier)
+
+    /*when (isAuthorized) {
         null -> LoadingDialog()
 
         false -> {
@@ -98,7 +100,7 @@ fun RootNavigationWrapper(
                 RootNavContent(modifier)
             }
         }
-    }
+    }*/
 }
 
 @Composable

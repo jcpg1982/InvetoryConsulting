@@ -43,3 +43,5 @@ fun ActivePdaNetwork?.asModelActivePda() = ActivePda(
     desColorNew = this?.desColorNew.orEmpty(),
     idInventarioActivoFijo = this?.idInventarioActivoFijo ?: -1
 )
+
+fun List<ActivePdaNetwork>?.asListActivePda() = this?.map { it.asModelActivePda() } ?: listOf()

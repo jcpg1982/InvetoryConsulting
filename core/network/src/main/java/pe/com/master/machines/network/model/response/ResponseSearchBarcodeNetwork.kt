@@ -8,6 +8,8 @@ import pe.com.master.machines.network.model.model.ActivePdaNetwork
 data class ResponseSearchBarcodeNetwork(
     @SerialName("data")
     val data: ActivePdaNetwork? = null,
+    @SerialName("hijos")
+    val listChildren: List<ActivePdaNetwork>? = null,
     @SerialName("mensaje")
     val message: String? = null,
     @SerialName("ok")

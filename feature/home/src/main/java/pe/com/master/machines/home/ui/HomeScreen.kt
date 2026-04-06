@@ -36,6 +36,8 @@ import pe.com.master.machines.design.components.text.SearchText
 import pe.com.master.machines.design.theme.ContentInsetEight
 import pe.com.master.machines.design.theme.ContentInsetSixteen
 import pe.com.master.machines.design.theme.DynamicTextSixteen
+import pe.com.master.machines.design.utils.DateUtils.FORMAT_DD_MM_YYYY
+import pe.com.master.machines.design.utils.DateUtils.formatDate
 import pe.com.master.machines.home.state.HomeState
 import pe.com.master.machines.home.viewmodel.HomeViewmodel
 import pe.com.master.machines.model.model.ActivePda
@@ -54,6 +56,7 @@ fun HomeScreen(
     var messageError by rememberSaveable { mutableStateOf("") }
     var messageLoading by rememberSaveable { mutableStateOf("") }
     var activePdaState by remember { mutableStateOf<ActivePda?>(null) }
+    var listChildren by remember { mutableStateOf<List<ActivePda>?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.homeState.collect { homeState ->
@@ -74,6 +77,7 @@ fun HomeScreen(
                     messageLoading = ""
                     messageError = ""
                     activePdaState = homeState.data
+                    listChildren = homeState.listChildren
                 }
             }
         }
@@ -133,7 +137,8 @@ fun HomeScreen(
                         )
                     }
 
-                    item { InfoRow(label = "Código de Barra", value = active.codBarraNew) }
+                    item { InfoRow(label = "Cód Barra padre", value = active.codBarraPadreNew) }
+                    item { InfoRow(label = "Cód Barra", value = active.codBarraNew) }
                     item { InfoRow(label = "Descripción", value = active.desActivoNew) }
                     item { InfoRow(label = "Marca", value = active.desMarcaNew) }
                     item { InfoRow(label = "Modelo", value = active.desModeloNew) }
@@ -141,16 +146,38 @@ fun HomeScreen(
                     item { InfoRow(label = "Placa", value = active.nroPlacaNew) }
                     item { InfoRow(label = "Chasis", value = active.nroChasis) }
                     item { InfoRow(label = "Motor", value = active.nroMotorNew) }
-                    item { InfoRow(label = "Estado", value = active.estado) }
                     item { InfoRow(label = "Centro", value = active.desCentroNew) }
                     item { InfoRow(label = "Capacidad", value = active.desCapacidadNew) }
                     item { InfoRow(label = "Color", value = active.desColorNew) }
                     item { InfoRow(label = "Potencia", value = active.desPotenciaNew) }
                     item { InfoRow(label = "Proceso", value = active.desProcesoNew) }
                     item { InfoRow(label = "Tipo Activo", value = active.desTipoActivoNew) }
+                    item {
+                        InfoRow(
+                            label = "Operativo",
+                            value = if (active.operativo == 1) "Operativo" else "Inoperativo"
+                        )
+                    }
+                    item {
+                        InfoRow(
+                            label = "Componente",
+                            value = active.componenteCompleto.toString()
+                        )
+                    }
                     item { InfoRow(label = "Tag", value = active.tag) }
                     item { InfoRow(label = "Horómetro", value = active.horometro.toString()) }
-                    item { InfoRow(label = "Fecha Modif.", value = active.fechaUltModificacion) }
+                    item {
+                        InfoRow(
+                            label = "Fecha.",
+                            value = formatDate(active.fecha, FORMAT_DD_MM_YYYY)
+                        )
+                    }
+                    item {
+                        InfoRow(
+                            label = "Fecha Modif.",
+                            value = formatDate(active.fechaUltModificacion, FORMAT_DD_MM_YYYY)
+                        )
+                    }
                     item { InfoRow(label = "Observación", value = active.desObservacionNew) }
                     if (active.fotoPathUrl.isNotBlank()) {
                         val fileName =
@@ -167,6 +194,43 @@ fun HomeScreen(
                                 contentScale = ContentScale.Inside,
                                 viewShimmer = true
                             )
+                        }
+                    }
+
+                    if (!listChildren.isNullOrEmpty()) {
+                        item {
+
+                            Spacer(modifier = Modifier.height(ContentInsetSixteen))
+
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                modifier = Modifier.padding(bottom = ContentInsetEight)
+                            )
+                            CustomText(
+                                text = "Listado de activos asociados",
+                                fontSize = DynamicTextSixteen,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(vertical = ContentInsetEight)
+                            )
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                modifier = Modifier.padding(bottom = ContentInsetEight)
+                            )
+                        }
+
+                        listChildren?.forEachIndexed { index, child ->
+                            item { InfoRow(label = "Cód Barra", value = child.codBarraNew) }
+                            if (index < listChildren!!.size - 1) {
+                                item {
+                                    HorizontalDivider(
+                                        thickness = 1.dp,
+                                        color = MaterialTheme.colorScheme.outlineVariant,
+                                        modifier = Modifier.padding(bottom = ContentInsetEight)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
