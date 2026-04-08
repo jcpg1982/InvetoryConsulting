@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import pe.com.master.machines.design.components.text.CustomText
 import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.design.theme.ContentInsetEight
@@ -70,15 +68,11 @@ fun ContentDrawer(
             ) {
                 items(listItems) { item ->
                     val isSelected = item.id == selectedSociedad.id
-                    val backgroundColor = if (isSelected) 
-                        MaterialTheme.colorScheme.primaryContainer 
-                    else 
-                        MaterialTheme.colorScheme.surface
-                    
-                    val textColor = if (isSelected) 
-                        MaterialTheme.colorScheme.onPrimaryContainer 
-                    else 
-                        MaterialTheme.colorScheme.onSurface
+                    val backgroundColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
+                    else MaterialTheme.colorScheme.surface
+
+                    val textColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
+                    else MaterialTheme.colorScheme.onSurface
 
                     CustomText(
                         modifier = Modifier
@@ -116,15 +110,11 @@ fun ContentDrawer(
             ) {
                 items(selectedSociedad.listInventories) { item ->
                     val isSelected = item.id == selectedInventory?.id
-                    val backgroundColor = if (isSelected) 
-                        MaterialTheme.colorScheme.secondaryContainer 
-                    else 
-                        MaterialTheme.colorScheme.surface.copy(alpha = 0f) // Transparente para ver el fondo de la columna
-                    
-                    val textColor = if (isSelected) 
-                        MaterialTheme.colorScheme.onSecondaryContainer 
-                    else 
-                        MaterialTheme.colorScheme.onSurface
+                    val backgroundColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer
+                    else MaterialTheme.colorScheme.surface.copy(alpha = 0f)
+
+                    val textColor = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer
+                    else MaterialTheme.colorScheme.onSurface
 
                     CustomText(
                         modifier = Modifier
@@ -149,15 +139,19 @@ fun ContentDrawer(
 
 // Previews con datos de prueba
 private val mockInventories = listOf(
-    Inventory(id = 0, inventoryName = "Almacén Central"),
-    Inventory(id = 1, inventoryName = "Sede Norte"),
-    Inventory(id = 2, inventoryName = "Stock Mantenimiento")
+    Inventory(id = 0, inventoryName = "Almacén Central", sizeCodBarra = 10),
+    Inventory(id = 1, inventoryName = "Sede Norte", sizeCodBarra = 10),
+    Inventory(id = 2, inventoryName = "Stock Mantenimiento", sizeCodBarra = 10)
 )
 
 private val mockSociedades = listOf(
     Sociedad(id = 0, sociedadName = "Master Machines SAC", listInventories = mockInventories),
     Sociedad(id = 1, sociedadName = "Logística General", listInventories = mockInventories.take(1)),
-    Sociedad(id = 2, sociedadName = "Servicios Industriales", listInventories = mockInventories.drop(1))
+    Sociedad(
+        id = 2,
+        sociedadName = "Servicios Industriales",
+        listInventories = mockInventories.drop(1)
+    )
 )
 
 @Preview(showBackground = true)
@@ -166,7 +160,11 @@ fun PreviewContentDrawerLight() {
     ConsultaInventarioTheme(darkTheme = false) {
         ContentDrawer(
             listItems = mockSociedades,
-            data = Data(documentNumber = "70654321", userName = "Carlos Mejia", listSociedades = listOf()),
+            data = Data(
+                documentNumber = "70654321",
+                userName = "Carlos Mejia",
+                listSociedades = listOf()
+            ),
             onItemSelected = { _, _ -> },
             onClosedSession = {}
         )
@@ -179,7 +177,11 @@ fun PreviewContentDrawerDark() {
     ConsultaInventarioTheme(darkTheme = true) {
         ContentDrawer(
             listItems = mockSociedades,
-            data = Data(documentNumber = "70654321", userName = "Carlos Mejia", listSociedades = listOf()),
+            data = Data(
+                documentNumber = "70654321",
+                userName = "Carlos Mejia",
+                listSociedades = listOf()
+            ),
             onItemSelected = { _, _ -> },
             onClosedSession = {}
         )

@@ -42,6 +42,7 @@ fun MainDrawerNavigationWrapper(
     var idSociedad by remember { mutableStateOf(sociedad?.id) }
     var inventory by remember { mutableStateOf(sociedad?.listInventories?.firstOrNull()) }
     var idInventory by remember { mutableStateOf(inventory?.id) }
+    var sizeCodBarra by remember { mutableStateOf(inventory?.sizeCodBarra) }
 
     var title by remember { mutableStateOf(sociedad?.sociedadName.orEmpty()) }
     var subTitle by remember { mutableStateOf(inventory?.inventoryName.orEmpty()) }
@@ -105,6 +106,7 @@ fun MainDrawerNavigationWrapper(
                                 HomeScreen(
                                     sociedadId = idSociedad ?: -1,
                                     inventoryId = idInventory ?: -1,
+                                    sizeCodBarra = sizeCodBarra ?: -1,
                                 )
                             }
                         },

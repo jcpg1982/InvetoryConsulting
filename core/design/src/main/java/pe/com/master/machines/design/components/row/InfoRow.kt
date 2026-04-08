@@ -15,6 +15,8 @@ fun InfoRow(
     modifier: Modifier = Modifier
 ) {
     if (value.isBlank()) return
+    if (value == "0") return
+    if (value == "0.0") return
 
     BoxWithConstraints(
         modifier.fillMaxWidth(),

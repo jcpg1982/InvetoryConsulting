@@ -39,7 +39,7 @@ import pe.com.master.machines.model.model.ActivePda
 fun HomeScreen(
     sociedadId: Int,
     inventoryId: Int,
-    sizeCodBarra: Int = 13,
+    sizeCodBarra: Int,
     viewModel: HomeViewmodel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -90,11 +90,19 @@ fun HomeScreen(
             SearchText(
                 hintSearch = "Ingresar código de barra",
                 value = searchText,
-                onValueChange = { searchText = it },
+                onValueChange = {
+                    searchText = it
+                    activePda = null
+                    listChildren = null
+                    fatherActivePda = null
+                },
                 maxCharacter = 100,
                 onSearch = { query ->
                     if (query.isNotBlank()) {
-                        viewModel.getSearchActivePda(sociedadId, inventoryId, query)
+                        val finalQuery =
+                            if (sizeCodBarra > 0) query.padStart(sizeCodBarra, '0') else query
+                        searchText = finalQuery
+                        viewModel.getSearchActivePda(sociedadId, inventoryId, finalQuery)
                     }
                 },
                 onScanClick = {
@@ -102,8 +110,10 @@ fun HomeScreen(
                         .addOnSuccessListener { barcode ->
                             val rawValue: String? = barcode.rawValue
                             rawValue?.let {
-                                searchText = it
-                                viewModel.getSearchActivePda(sociedadId, inventoryId, it)
+                                val finalQuery =
+                                    if (sizeCodBarra > 0) it.padStart(sizeCodBarra, '0') else it
+                                searchText = finalQuery
+                                viewModel.getSearchActivePda(sociedadId, inventoryId, finalQuery)
                             }
                         }
                         .addOnFailureListener {
@@ -138,7 +148,8 @@ fun HomeScreen(
                             item = active,
                             onClickImage = { url ->
                                 imageUrl = url
-                            }
+                            },
+                            isChildren = false
                         )
                     }
 
@@ -163,7 +174,8 @@ fun HomeScreen(
                                     item = father,
                                     onClickImage = { url ->
                                         imageUrl = url
-                                    }
+                                    },
+                                    isChildren = false
                                 )
                             }
                         }
@@ -192,23 +204,21 @@ fun HomeScreen(
                             )
                         }
 
-                        listChildren?.forEachIndexed { index, child ->
+                        listChildren?.forEach { child ->
                             item {
                                 ActivePdaRow(
                                     item = child,
                                     onClickImage = { url ->
                                         imageUrl = url
-                                    }
+                                    },
+                                    isChildren = true
                                 )
                             }
-                            if (index < listChildren!!.size - 1) {
-                                item {
-                                    HorizontalDivider(
-                                        thickness = 1.dp,
-                                        color = MaterialTheme.colorScheme.outlineVariant,
-                                        modifier = Modifier.padding(bottom = ContentInsetEight)
-                                    )
-                                }
+
+                            item {
+                                Spacer(
+                                    modifier = Modifier.height(ContentInsetEight)
+                                )
                             }
                         }
                     }
