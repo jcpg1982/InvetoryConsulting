@@ -40,7 +40,7 @@ inline fun <reified T> ItemsSearch(
             maxCharacter = 100,
             primaryColor = primaryColor,
             colorText = colorText,
-            onMessageSearch = { query ->
+            onSearch = { query ->
                 filteredList = if (query.isEmpty()) {
                     listItems
                 } else {

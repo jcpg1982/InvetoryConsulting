@@ -38,7 +38,7 @@ fun SearchText(
     colorText: Color = MaterialTheme.colorScheme.onSurface,
     imeAction: ImeAction = ImeAction.Search,
     maxCharacter: Int = 100,
-    onMessageSearch: (String) -> Unit,
+    onSearch: (String) -> Unit,
     onScanClick: () -> Unit = {},
     onValueChange: (String) -> Unit = {},
 ) {
@@ -83,7 +83,7 @@ fun SearchText(
                         contentDescription = "Clear text",
                         modifier = Modifier.clickable {
                             onValueChange("")
-                            onMessageSearch("")
+                            onSearch("")
                         },
                         tint = primaryColor
                     )
@@ -103,7 +103,7 @@ fun SearchText(
         ),
         keyboardActions = KeyboardActions(
             onSearch = {
-                onMessageSearch(value.trim())
+                onSearch(value.trim())
                 keyboardController?.hide()
             }
         ),
@@ -126,7 +126,7 @@ fun GetPreviewSearchTextLight() {
         SearchText(
             hintSearch = "Buscar",
             value = "",
-            onMessageSearch = { }
+            onSearch = { }
         )
     }
 }
@@ -138,7 +138,7 @@ fun GetPreviewSearchTextDark() {
         SearchText(
             hintSearch = "Buscar",
             value = "",
-            onMessageSearch = { }
+            onSearch = { }
         )
     }
 }

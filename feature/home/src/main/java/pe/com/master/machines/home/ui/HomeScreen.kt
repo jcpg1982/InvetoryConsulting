@@ -39,6 +39,7 @@ import pe.com.master.machines.model.model.ActivePda
 fun HomeScreen(
     sociedadId: Int,
     inventoryId: Int,
+    sizeCodBarra: Int = 13,
     viewModel: HomeViewmodel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -91,7 +92,7 @@ fun HomeScreen(
                 value = searchText,
                 onValueChange = { searchText = it },
                 maxCharacter = 100,
-                onMessageSearch = { query ->
+                onSearch = { query ->
                     if (query.isNotBlank()) {
                         viewModel.getSearchActivePda(sociedadId, inventoryId, query)
                     }
