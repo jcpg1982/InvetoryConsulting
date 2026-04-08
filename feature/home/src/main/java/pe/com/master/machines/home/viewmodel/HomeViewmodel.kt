@@ -61,7 +61,8 @@ class HomeViewmodel @Inject constructor(
                             _homeState.send(
                                 HomeState.SuccessSearch(
                                     res.data.data,
-                                    res.data.listChildren
+                                    res.data.listChildren,
+                                    res.data.father
                                 )
                             )
                         }

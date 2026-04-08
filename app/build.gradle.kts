@@ -1,3 +1,10 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import org.gradle.language.nativeplatform.internal.Dimensions.applicationVariants
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.hilt)
@@ -45,6 +52,15 @@ android {
     }
 }
 
+base {
+    val dateTime = SimpleDateFormat("ddMMyyyy_HHmmss", Locale.ROOT).apply {
+        timeZone = TimeZone.getTimeZone("GMT-5")
+    }.format(Date())
+    val versionName = android.defaultConfig.versionName
+    val versionCode = android.defaultConfig.versionCode
+    archivesName.set("ConsultaInventario_${dateTime}_${versionName}_${versionCode}")
+}
+
 dependencies {
 
     implementation(projects.core.common)
@@ -60,7 +76,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    
+
     // Firebase (Bom is in core:firebase but can be added here too if needed for direct usage)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

@@ -6,5 +6,9 @@ import pe.com.master.machines.model.model.Data
 sealed interface HomeState {
     data object Loading : HomeState
     data class Error(val message: String) : HomeState
-    data class SuccessSearch(val data: ActivePda, val listChildren: List<ActivePda>) : HomeState
+    data class SuccessSearch(
+        val data: ActivePda,
+        val listChildren: List<ActivePda>,
+        val father: ActivePda
+    ) : HomeState
 }

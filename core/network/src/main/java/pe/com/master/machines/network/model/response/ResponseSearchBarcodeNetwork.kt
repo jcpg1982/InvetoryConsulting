@@ -10,6 +10,8 @@ data class ResponseSearchBarcodeNetwork(
     val data: ActivePdaNetwork? = null,
     @SerialName("hijos")
     val listChildren: List<ActivePdaNetwork>? = null,
+    @SerialName("padre")
+    val father: ActivePdaNetwork? = null,
     @SerialName("mensaje")
     val message: String? = null,
     @SerialName("ok")
