@@ -9,6 +9,6 @@ data class InventoryNetwork(
     val id: Int? = null,
     @SerialName("nom_inventario")
     val inventoryName: String? = null,
-    @SerialName("cod_barra")
-    val sizeCodBarra: Int? = null
+    @SerialName("val_longitud_barra")
+    val sizeCodBarra: Double? = null
 )
