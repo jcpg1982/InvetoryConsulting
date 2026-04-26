@@ -80,5 +80,9 @@ data class ActivePdaNetwork(
     @SerialName("operativo")
     val operativo: Int? = null,
     @SerialName("tag")
-    val tag: String? = null
+    val tag: String? = null,
+    @SerialName("id_subproceso")
+    val idSubprocess: Int? = null,
+    @SerialName("des_subproceso")
+    val desSubprocess: String? = null
 )

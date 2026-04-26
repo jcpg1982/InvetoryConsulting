@@ -36,18 +36,27 @@ fun MainDrawerNavigationWrapper(
     onNavigateToLogin: () -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-    val listItems = remember(data.listSociedades) { data.listSociedades }
-    var sociedad by remember { mutableStateOf(listItems.firstOrNull()) }
-    var idSociedad by remember { mutableStateOf(sociedad?.id) }
-    var inventory by remember { mutableStateOf(sociedad?.listInventories?.firstOrNull()) }
-    var idInventory by remember { mutableStateOf(inventory?.id) }
-    var sizeCodBarra by remember { mutableStateOf(inventory?.sizeCodBarra) }
-
-    var title by remember { mutableStateOf(sociedad?.sociedadName.orEmpty()) }
-    var subTitle by remember { mutableStateOf(inventory?.inventoryName.orEmpty()) }
-
     val scope = rememberCoroutineScope()
+
+    var idSociedad by remember(data) {
+        mutableStateOf(data.listSociedades.firstOrNull()?.id)
+    }
+    var idInventory by remember(data) {
+        mutableStateOf(data.listSociedades.firstOrNull()?.listInventories?.firstOrNull()?.id)
+    }
+
+    val selectedSociedad = remember(idSociedad, data) {
+        data.listSociedades.find { it.id == idSociedad }
+    }
+
+    val selectedInventory = remember(idInventory, selectedSociedad) {
+        selectedSociedad?.listInventories?.find { it.id == idInventory }
+    }
+
+    val title = selectedSociedad?.sociedadName.orEmpty()
+    val subTitle = selectedInventory?.inventoryName.orEmpty()
+    val sizeCodBarra = selectedInventory?.sizeCodBarra ?: -1
+
     val backStack = rememberNavBackStack(
         configuration = navSavedStateConfigurationMainDrawer,
         MainRoutes.HomeRoute
@@ -58,21 +67,15 @@ fun MainDrawerNavigationWrapper(
         drawerState = drawerState,
         drawerContent = {
             ContentDrawer(
-                listItems = listItems,
+                listItems = data.listSociedades,
                 modifier = Modifier
                     .fillMaxWidth(0.7f),
                 data = data,
                 onItemSelected = { sociedadId, inventoryId ->
                     scope.launch {
                         drawerState.close()
-                        if (inventoryId != idInventory) {
-                            val sociedad = data.listSociedades.find { it.id == sociedadId }
-                            val inventory = sociedad?.listInventories?.find { it.id == inventoryId }
-                            title = sociedad?.sociedadName.orEmpty()
-                            subTitle = inventory?.inventoryName.orEmpty()
-                            idSociedad = sociedadId
-                            idInventory = inventoryId
-                        }
+                        idSociedad = sociedadId
+                        idInventory = inventoryId
                     }
                 },
                 onClosedSession = {
@@ -106,7 +109,7 @@ fun MainDrawerNavigationWrapper(
                                 HomeScreen(
                                     sociedadId = idSociedad ?: -1,
                                     inventoryId = idInventory ?: -1,
-                                    sizeCodBarra = sizeCodBarra ?: -1,
+                                    sizeCodBarra = sizeCodBarra,
                                 )
                             }
                         },

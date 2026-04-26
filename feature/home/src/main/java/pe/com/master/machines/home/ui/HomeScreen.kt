@@ -241,9 +241,17 @@ fun HomeScreen(
             title = "Consulta de Activo",
             message = messageError,
             onPositiveCallback = {
+                searchText = ""
+                activePda = null
+                listChildren = null
+                fatherActivePda = null
                 messageError = ""
             },
             onDismissDialog = {
+                searchText = ""
+                activePda = null
+                listChildren = null
+                fatherActivePda = null
                 messageError = ""
             }
         )

@@ -4,21 +4,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import pe.com.master.machines.design.theme.ColorWhite
+import pe.com.master.machines.design.theme.ConsultaInventarioTheme
 import pe.com.master.machines.model.enums.DialogType
 
 @Composable
 fun DialogConfirm(
     title: String,
     message: String,
-    isCancelable: Boolean,
-    textPositiveButton: String,
-    textColorPositiveButton: Color,
-    backgroundColorPositiveButton: Color,
+    isCancelable: Boolean = true,
+    textPositiveButton: String = "Aceptar",
+    textColorPositiveButton: Color = MaterialTheme.colorScheme.onPrimary,
+    backgroundColorPositiveButton: Color = MaterialTheme.colorScheme.primary,
     onPositiveCallback: () -> Unit,
-    textNegativeButton: String,
-    textColorNegativeButton: Color,
-    backgroundColorNegativeButton: Color,
+    textNegativeButton: String = "Cancelar",
+    textColorNegativeButton: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    backgroundColorNegativeButton: Color = MaterialTheme.colorScheme.secondaryContainer,
     onNegativeCallback: () -> Unit,
     onDismissDialog: () -> Unit = {}
 ) {
@@ -39,19 +39,28 @@ fun DialogConfirm(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun PreviewDialogConfirm() {
-    DialogConfirm(
-        title = "titulo",
-        message = "mensaje",
-        isCancelable = false,
-        textPositiveButton = "aceptar",
-        textColorPositiveButton = MaterialTheme.colorScheme.onPrimary,
-        backgroundColorPositiveButton = ColorWhite,
-        onPositiveCallback = { },
-        textNegativeButton = "cancelar",
-        textColorNegativeButton = MaterialTheme.colorScheme.onSecondary,
-        backgroundColorNegativeButton = ColorWhite,
-        onNegativeCallback = { }) {}
+fun PreviewDialogConfirmLight() {
+    ConsultaInventarioTheme(darkTheme = false) {
+        DialogConfirm(
+            title = "Confirmación",
+            message = "¿Está seguro de realizar esta acción?",
+            onPositiveCallback = { },
+            onNegativeCallback = { }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDialogConfirmDark() {
+    ConsultaInventarioTheme(darkTheme = true) {
+        DialogConfirm(
+            title = "Confirmación",
+            message = "¿Está seguro de realizar esta acción?",
+            onPositiveCallback = { },
+            onNegativeCallback = { }
+        )
+    }
 }

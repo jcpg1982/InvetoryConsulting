@@ -1,5 +1,7 @@
 package pe.com.master.machines.model.model
 
+import kotlinx.serialization.SerialName
+
 data class ActivePda(
     val codBarraNew: String,
     val codBarraPadreNew: String,
@@ -38,6 +40,8 @@ data class ActivePda(
     val nroPlacaNew: String,
     val nroSerieNew: String,
     val operativo: Int,
-    val tag: String
+    val tag: String,
+    val idSubprocess: Int,
+    val desSubprocess: String,
 )
 

@@ -41,7 +41,9 @@ fun ActivePdaNetwork?.asModelActivePda() = ActivePda(
     fotoPathLocal = this?.fotoPathLocal.orEmpty(),
     fotoPathUrl = this?.fotoPathUrl.orEmpty(),
     desColorNew = this?.desColorNew.orEmpty(),
-    idInventarioActivoFijo = this?.idInventarioActivoFijo ?: -1
+    idInventarioActivoFijo = this?.idInventarioActivoFijo ?: -1,
+    idSubprocess = this?.idSubprocess ?: -1,
+    desSubprocess = this?.desSubprocess.orEmpty()
 )
 
 fun List<ActivePdaNetwork>?.asListActivePda() = this?.map { it.asModelActivePda() } ?: listOf()

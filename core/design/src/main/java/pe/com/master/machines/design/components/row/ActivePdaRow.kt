@@ -59,6 +59,7 @@ fun ActivePdaRow(
                     value = if (item.operativo == 1) "Operativo" else "Inoperativo"
                 )
                 InfoRow(label = "Observación", value = item.desObservacionNew)
+                InfoRow(label = "Sub Proceso", value = item.desSubprocess)
                 InfoRow(
                     label = "Fecha.",
                     value = formatDate(item.fecha, FORMAT_DD_MM_YYYY)
