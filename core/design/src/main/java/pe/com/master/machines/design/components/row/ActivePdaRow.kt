@@ -42,6 +42,7 @@ fun ActivePdaRow(
                 InfoRow(label = "Cód Barra", value = item.codBarraNew)
                 InfoRow(label = "Centro", value = item.desCentroNew)
                 InfoRow(label = "Proceso", value = item.desProcesoNew)
+                InfoRow(label = "Sub Proceso", value = item.desSubprocess)
                 InfoRow(label = "Tipo Activo", value = item.desTipoActivoNew)
                 InfoRow(label = "Marca", value = item.desMarcaNew)
                 InfoRow(label = "Modelo", value = item.desModeloNew)
@@ -59,7 +60,6 @@ fun ActivePdaRow(
                     value = if (item.operativo == 1) "Operativo" else "Inoperativo"
                 )
                 InfoRow(label = "Observación", value = item.desObservacionNew)
-                InfoRow(label = "Sub Proceso", value = item.desSubprocess)
                 InfoRow(
                     label = "Fecha.",
                     value = formatDate(item.fecha, FORMAT_DD_MM_YYYY)
