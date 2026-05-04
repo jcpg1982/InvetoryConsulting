@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
@@ -38,10 +39,10 @@ fun MainDrawerNavigationWrapper(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    var idSociedad by remember(data) {
+    var idSociedad by rememberSaveable(data.documentNumber) {
         mutableStateOf(data.listSociedades.firstOrNull()?.id)
     }
-    var idInventory by remember(data) {
+    var idInventory by rememberSaveable(data.documentNumber) {
         mutableStateOf(data.listSociedades.firstOrNull()?.listInventories?.firstOrNull()?.id)
     }
 

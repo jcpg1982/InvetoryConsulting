@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import pe.com.master.machines.design.components.dialogs.DialogAlert
 import pe.com.master.machines.design.components.dialogs.LoadingDialog
@@ -33,7 +33,6 @@ import pe.com.master.machines.design.theme.ContentInsetSixteen
 import pe.com.master.machines.design.theme.DynamicTextSixteen
 import pe.com.master.machines.home.state.HomeState
 import pe.com.master.machines.home.viewmodel.HomeViewmodel
-import pe.com.master.machines.model.model.ActivePda
 
 @Composable
 fun HomeScreen(
@@ -45,39 +44,11 @@ fun HomeScreen(
     val context = LocalContext.current
     val scanner = remember { GmsBarcodeScanning.getClient(context) }
 
+    val homeState by viewModel.homeState.collectAsStateWithLifecycle()
+
     var imageUrl by rememberSaveable { mutableStateOf("") }
     var searchText by rememberSaveable { mutableStateOf("") }
     var messageError by rememberSaveable { mutableStateOf("") }
-    var messageLoading by rememberSaveable { mutableStateOf("") }
-    var activePda by remember { mutableStateOf<ActivePda?>(null) }
-    var listChildren by remember { mutableStateOf<List<ActivePda>?>(null) }
-    var fatherActivePda by remember { mutableStateOf<ActivePda?>(null) }
-
-    LaunchedEffect(Unit) {
-        viewModel.homeState.collect { homeState ->
-            when (homeState) {
-                is HomeState.Error -> {
-                    activePda = null
-                    messageLoading = ""
-                    messageError = homeState.message
-                }
-
-                HomeState.Loading -> {
-                    activePda = null
-                    messageError = ""
-                    messageLoading = "Cargando..."
-                }
-
-                is HomeState.SuccessSearch -> {
-                    messageLoading = ""
-                    messageError = ""
-                    activePda = homeState.data
-                    listChildren = homeState.listChildren
-                    fatherActivePda = homeState.father
-                }
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -92,9 +63,7 @@ fun HomeScreen(
                 value = searchText,
                 onValueChange = {
                     searchText = it
-                    activePda = null
-                    listChildren = null
-                    fatherActivePda = null
+                    viewModel.resetHomeState()
                 },
                 maxCharacter = 100,
                 onSearch = { query ->
@@ -122,39 +91,57 @@ fun HomeScreen(
                 }
             )
 
-            activePda?.let { active ->
-                Spacer(modifier = Modifier.height(ContentInsetSixteen))
+            when (val state = homeState) {
+                HomeState.Loading -> LoadingDialog()
+                is HomeState.Error -> {
+                    DialogAlert(
+                        title = "Consulta de Activo",
+                        message = state.message,
+                        onPositiveCallback = {
+                            searchText = ""
+                            viewModel.resetHomeState()
+                        },
+                        onDismissDialog = {
+                            searchText = ""
+                            viewModel.resetHomeState()
+                        }
+                    )
+                }
 
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(bottom = ContentInsetSixteen)
-                ) {
-                    item {
-                        CustomText(
-                            text = "Detalles del Activo",
-                            fontSize = DynamicTextSixteen,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(vertical = ContentInsetEight)
-                        )
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.outlineVariant,
-                            modifier = Modifier.padding(bottom = ContentInsetEight)
-                        )
-                    }
+                is HomeState.SuccessSearch -> {
+                    val active = state.data
+                    val listChildren = state.listChildren
+                    val fatherActivePda = state.father
+                    Spacer(modifier = Modifier.height(ContentInsetSixteen))
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(bottom = ContentInsetSixteen)
+                    ) {
+                        item {
+                            CustomText(
+                                text = "Detalles del Activo",
+                                fontSize = DynamicTextSixteen,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(vertical = ContentInsetEight)
+                            )
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                modifier = Modifier.padding(bottom = ContentInsetEight)
+                            )
+                        }
 
-                    item {
-                        ActivePdaRow(
-                            item = active,
-                            onClickImage = { url ->
-                                imageUrl = url
-                            },
-                            isChildren = false
-                        )
-                    }
+                        item {
+                            ActivePdaRow(
+                                item = active,
+                                onClickImage = { url ->
+                                    imageUrl = url
+                                },
+                                isChildren = false
+                            )
+                        }
 
-                    fatherActivePda?.let { father ->
-                        if (father.idActivosPda > 0) {
+                        if (fatherActivePda.idActivosPda > 0) {
                             item {
                                 CustomText(
                                     text = "Detalles del Activo Padre",
@@ -171,7 +158,7 @@ fun HomeScreen(
 
                             item {
                                 ActivePdaRow(
-                                    item = father,
+                                    item = fatherActivePda,
                                     onClickImage = { url ->
                                         imageUrl = url
                                     },
@@ -179,50 +166,52 @@ fun HomeScreen(
                                 )
                             }
                         }
-                    }
 
-                    if (!listChildren.isNullOrEmpty()) {
-                        item {
-
-                            Spacer(modifier = Modifier.height(ContentInsetSixteen))
-
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                color = MaterialTheme.colorScheme.outlineVariant,
-                                modifier = Modifier.padding(bottom = ContentInsetEight)
-                            )
-                            CustomText(
-                                text = "Listado de activos asociados",
-                                fontSize = DynamicTextSixteen,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(vertical = ContentInsetEight)
-                            )
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                color = MaterialTheme.colorScheme.outlineVariant,
-                                modifier = Modifier.padding(bottom = ContentInsetEight)
-                            )
-                        }
-
-                        listChildren?.forEach { child ->
+                        if (listChildren.isNotEmpty()) {
                             item {
-                                ActivePdaRow(
-                                    item = child,
-                                    onClickImage = { url ->
-                                        imageUrl = url
-                                    },
-                                    isChildren = true
+
+                                Spacer(modifier = Modifier.height(ContentInsetSixteen))
+
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = MaterialTheme.colorScheme.outlineVariant,
+                                    modifier = Modifier.padding(bottom = ContentInsetEight)
+                                )
+                                CustomText(
+                                    text = "Listado de activos asociados",
+                                    fontSize = DynamicTextSixteen,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(vertical = ContentInsetEight)
+                                )
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = MaterialTheme.colorScheme.outlineVariant,
+                                    modifier = Modifier.padding(bottom = ContentInsetEight)
                                 )
                             }
 
-                            item {
-                                Spacer(
-                                    modifier = Modifier.height(ContentInsetEight)
-                                )
+                            listChildren.forEach { child ->
+                                item {
+                                    ActivePdaRow(
+                                        item = child,
+                                        onClickImage = { url ->
+                                            imageUrl = url
+                                        },
+                                        isChildren = true
+                                    )
+                                }
+
+                                item {
+                                    Spacer(
+                                        modifier = Modifier.height(ContentInsetEight)
+                                    )
+                                }
                             }
                         }
                     }
                 }
+
+                else -> {}
             }
         }
     )
@@ -238,26 +227,16 @@ fun HomeScreen(
 
     if (messageError.isNotBlank()) {
         DialogAlert(
-            title = "Consulta de Activo",
+            title = "Error al escanear el código de barras",
             message = messageError,
             onPositiveCallback = {
                 searchText = ""
-                activePda = null
-                listChildren = null
-                fatherActivePda = null
                 messageError = ""
             },
             onDismissDialog = {
                 searchText = ""
-                activePda = null
-                listChildren = null
-                fatherActivePda = null
                 messageError = ""
             }
         )
-    }
-
-    if (messageLoading.isNotBlank()) {
-        LoadingDialog()
     }
 }
