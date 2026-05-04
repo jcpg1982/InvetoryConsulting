@@ -45,9 +45,9 @@ fun HomeScreen(
     val scanner = remember { GmsBarcodeScanning.getClient(context) }
 
     val homeState by viewModel.homeState.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
 
     var imageUrl by rememberSaveable { mutableStateOf("") }
-    var searchText by rememberSaveable { mutableStateOf("") }
     var messageError by rememberSaveable { mutableStateOf("") }
 
     Column(
@@ -63,26 +63,29 @@ fun HomeScreen(
                 value = searchText,
                 onValueChange = { newValue ->
                     if (newValue != searchText) {
-                        searchText = newValue
+                        viewModel.updateSearchText(newValue)
                         viewModel.resetHomeState()
                     }
                 },
                 maxCharacter = 100,
                 onSearch = {
                     if (searchText.isNotBlank()) {
-                        searchText = if (sizeCodBarra > 0) searchText.padStart(sizeCodBarra, '0')
-                        else searchText
-                        viewModel.getSearchActivePda(sociedadId, inventoryId, searchText)
+                        val finalQuery =
+                            if (sizeCodBarra > 0) searchText.padStart(sizeCodBarra, '0')
+                            else searchText
+                        viewModel.updateSearchText(finalQuery)
+                        viewModel.getSearchActivePda(sociedadId, inventoryId)
                     }
                 },
                 onScanClick = {
                     scanner.startScan()
                         .addOnSuccessListener { barcode ->
                             barcode.rawValue?.let { result ->
-                                searchText =
+                                val finalQuery =
                                     if (sizeCodBarra > 0) result.padStart(sizeCodBarra, '0')
                                     else result
-                                viewModel.getSearchActivePda(sociedadId, inventoryId, searchText)
+                                viewModel.updateSearchText(finalQuery)
+                                viewModel.getSearchActivePda(sociedadId, inventoryId)
                             }
                         }
                         .addOnFailureListener {
@@ -98,11 +101,11 @@ fun HomeScreen(
                         title = "Consulta de Activo",
                         message = state.message,
                         onPositiveCallback = {
-                            searchText = ""
+                            viewModel.updateSearchText("")
                             viewModel.resetHomeState()
                         },
                         onDismissDialog = {
-                            searchText = ""
+                            viewModel.updateSearchText("")
                             viewModel.resetHomeState()
                         }
                     )
@@ -230,11 +233,11 @@ fun HomeScreen(
             title = "Error al escanear el código de barras",
             message = messageError,
             onPositiveCallback = {
-                searchText = ""
+                viewModel.updateSearchText("")
                 messageError = ""
             },
             onDismissDialog = {
-                searchText = ""
+                viewModel.updateSearchText("")
                 messageError = ""
             }
         )

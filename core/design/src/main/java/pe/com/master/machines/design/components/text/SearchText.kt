@@ -61,6 +61,13 @@ fun SearchText(
         )
     }
 
+    if (textFieldValueState.text != value) {
+        textFieldValueState = textFieldValueState.copy(
+            text = value,
+            selection = TextRange(value.length)
+        )
+    }
+
     LaunchedEffect(value) {
         if (textFieldValueState.text != value) {
             textFieldValueState = TextFieldValue(
