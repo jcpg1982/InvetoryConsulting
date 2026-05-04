@@ -68,10 +68,10 @@ fun HomeScreen(
                     }
                 },
                 maxCharacter = 100,
-                onSearch = { query ->
-                    if (query.isNotBlank()) {
-                        searchText = if (sizeCodBarra > 0) query.padStart(sizeCodBarra, '0')
-                        else query
+                onSearch = {
+                    if (searchText.isNotBlank()) {
+                        searchText = if (sizeCodBarra > 0) searchText.padStart(sizeCodBarra, '0')
+                        else searchText
                         viewModel.getSearchActivePda(sociedadId, inventoryId, searchText)
                     }
                 },

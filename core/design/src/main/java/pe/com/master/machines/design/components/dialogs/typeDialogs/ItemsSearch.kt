@@ -40,12 +40,12 @@ inline fun <reified T> ItemsSearch(
             maxCharacter = 100,
             primaryColor = primaryColor,
             colorText = colorText,
-            onSearch = { query ->
-                filteredList = if (query.isEmpty()) {
+            onSearch = {
+                filteredList = if (searchText.isEmpty()) {
                     listItems
                 } else {
                     listItems.filter { data ->
-                        data.toString().lowercase().contains(query.lowercase())
+                        data.toString().lowercase().contains(searchText.lowercase())
                     }
                 }
             }
