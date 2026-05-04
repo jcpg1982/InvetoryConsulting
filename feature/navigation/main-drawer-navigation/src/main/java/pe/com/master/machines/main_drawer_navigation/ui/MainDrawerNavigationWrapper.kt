@@ -1,11 +1,14 @@
 package pe.com.master.machines.main_drawer_navigation.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -25,6 +29,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import pe.com.master.machines.design.components.drawer.ContentDrawer
+import pe.com.master.machines.design.components.text.CustomText
 import pe.com.master.machines.design.components.topBar.TopBarHome
 import pe.com.master.machines.design.utils.Utils.horizontalSlideTransition
 import pe.com.master.machines.home.ui.HomeScreen
@@ -107,11 +112,25 @@ fun MainDrawerNavigationWrapper(
                         onBack = { backStack.removeLastOrNull() },
                         entryProvider = entryProvider {
                             entry<MainRoutes.HomeRoute> {
-                                HomeScreen(
-                                    sociedadId = idSociedad ?: -1,
-                                    inventoryId = idInventory ?: -1,
-                                    sizeCodBarra = sizeCodBarra,
-                                )
+                                val currentIdSociedad = idSociedad
+                                val currentIdInventory = idInventory
+                                if (currentIdSociedad != null && currentIdInventory != null) {
+                                    HomeScreen(
+                                        sociedadId = currentIdSociedad,
+                                        inventoryId = currentIdInventory,
+                                        sizeCodBarra = sizeCodBarra,
+                                    )
+                                } else {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CustomText(
+                                            text = "No hay un inventario seleccionado",
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                    }
+                                }
                             }
                         },
                         transitionSpec = { horizontalSlideTransition(false) },

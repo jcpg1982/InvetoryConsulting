@@ -79,7 +79,7 @@ fun ContentInfoRow(
                 fontSize = DynamicTextSixteen,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.End,
-                maxLines = 3
+                maxLines = 10
             )
         }
     )

@@ -70,21 +70,19 @@ fun HomeScreen(
                 maxCharacter = 100,
                 onSearch = { query ->
                     if (query.isNotBlank()) {
-                        val finalQuery =
-                            if (sizeCodBarra > 0) query.padStart(sizeCodBarra, '0') else query
-                        searchText = finalQuery
-                        viewModel.getSearchActivePda(sociedadId, inventoryId, finalQuery)
+                        searchText = if (sizeCodBarra > 0) query.padStart(sizeCodBarra, '0')
+                        else query
+                        viewModel.getSearchActivePda(sociedadId, inventoryId, searchText)
                     }
                 },
                 onScanClick = {
                     scanner.startScan()
                         .addOnSuccessListener { barcode ->
-                            val rawValue: String? = barcode.rawValue
-                            rawValue?.let {
-                                val finalQuery =
-                                    if (sizeCodBarra > 0) it.padStart(sizeCodBarra, '0') else it
-                                searchText = finalQuery
-                                viewModel.getSearchActivePda(sociedadId, inventoryId, finalQuery)
+                            barcode.rawValue?.let { result ->
+                                searchText =
+                                    if (sizeCodBarra > 0) result.padStart(sizeCodBarra, '0')
+                                    else result
+                                viewModel.getSearchActivePda(sociedadId, inventoryId, searchText)
                             }
                         }
                         .addOnFailureListener {
