@@ -61,9 +61,11 @@ fun HomeScreen(
             SearchText(
                 hintSearch = "Ingresar código de barra",
                 value = searchText,
-                onValueChange = {
-                    searchText = it
-                    viewModel.resetHomeState()
+                onValueChange = { newValue ->
+                    if (newValue != searchText) {
+                        searchText = newValue
+                        viewModel.resetHomeState()
+                    }
                 },
                 maxCharacter = 100,
                 onSearch = { query ->
